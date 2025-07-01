@@ -5,9 +5,9 @@ const Header = () => {
     <header className='flex flex-row justify-between items-center w-full h-25 px-20 bg-[#E3FFEF]'>
       {/* LOGO SECTION */}
       <div>
-        <h2 className='font-bold text-2xl text-[#006A34]'>
+        <a href="home" className='font-bold text-2xl text-[#006A34]'>
           LOGO
-        </h2>
+        </a>
       </div>
       {/* NAVIGATION SECTION */}
       <div className='flex flex-row gap-6 items-center'>
