@@ -4,47 +4,42 @@ import { useNavigate, useLocation } from "react-router-dom";
 const JoinFormStep3 = () => {
   const navigate = useNavigate();
   const location = useLocation();
+
+  const [formData, setFormData] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
-  // Step 1 and 2 data from location.state
-  const {
-    firstName = "Shavon",
-    lastName = "Fernando",
-    email = "shavon1234@gmail.com",
-    tree = "Jack Tree",
-    location: locationText = "Colombo",
-    imagePreview, // from Step 2
-  } = location.state || {};
-
-  const name = `${firstName} ${lastName}`;
-
-  // Validate required data
+  // Load data from state or localStorage
   useEffect(() => {
-    if (!firstName || !email) {
-      setErrors({ form: "Missing required data from previous steps. Please start over." });
+    if (location.state) {
+      setFormData(location.state);
+    } else {
+      const savedStep1 = JSON.parse(localStorage.getItem("joinFormData") || "{}");
+      const savedStep2 = JSON.parse(localStorage.getItem("joinFormStep2Data") || "{}");
+
+      if (savedStep1.firstName && savedStep1.email && savedStep2.imagePreview) {
+        setFormData({ ...savedStep1, ...savedStep2 });
+      } else {
+        setErrors({ form: "Missing required data from previous steps. Please start over." });
+      }
     }
-  }, [firstName, email]);
+  }, [location.state]);
 
   const handleSubmit = async () => {
-    if (errors.form) return;
+    if (errors.form || !formData) return;
 
     setIsLoading(true);
     try {
-      // Prepare submission data
       const certificateData = {
-        name,
-        email,
-        tree,
-        location: locationText,
-        image: imagePreview,
+        name: `${formData.firstName} ${formData.lastName}`,
+        email: formData.email,
+        tree: formData.tree,
+        location: formData.location,
+        image: formData.imagePreview,
       };
 
-      // Persist data to localStorage (remove if using backend)
       localStorage.setItem("joinFormSubmissionData", JSON.stringify(certificateData));
-
-      // Simulate backend submission (replace with API call if needed)
       await new Promise((resolve) => setTimeout(resolve, 500));
 
       setSubmitted(true);
@@ -58,17 +53,18 @@ const JoinFormStep3 = () => {
   };
 
   const handleGetCertificate = () => {
+    if (!formData) return;
     navigate("/certificate", {
       state: {
-        name,
-        tree,
-        location: locationText,
-        image: imagePreview,
+        name: `${formData.firstName} ${formData.lastName}`,
+        tree: formData.tree,
+        location: formData.location,
+        image: formData.imagePreview,
       },
     });
   };
 
-  // Step indicator data
+  // Step indicator
   const steps = [
     { label: "Enter details", active: false },
     { label: "Upload Picture", active: false },
@@ -82,22 +78,23 @@ const JoinFormStep3 = () => {
         {errors.form}
       </div>
     );
-  } else if (!submitted) {
+  } else if (!submitted && formData) {
+    const name = `${formData.firstName} ${formData.lastName}`;
     content = (
       <>
-        {/* User Info */}
+        {/* Info Display */}
         <div className="text-sm sm:text-base leading-7 text-gray-800 mb-6 space-y-1 px-4">
           <p><span className="font-semibold">Name :</span> {name}</p>
-          <p><span className="font-semibold">Email :</span> {email}</p>
-          <p><span className="font-semibold">Tree (planted) :</span> {tree}</p>
-          <p><span className="font-semibold">Location :</span> {locationText}</p>
+          <p><span className="font-semibold">Email :</span> {formData.email}</p>
+          <p><span className="font-semibold">Tree (planted) :</span> {formData.tree}</p>
+          <p><span className="font-semibold">Location :</span> {formData.location}</p>
         </div>
 
         {/* Uploaded Image */}
         <div className="flex flex-col items-center gap-2 mb-6">
-          {imagePreview ? (
+          {formData.imagePreview ? (
             <img
-              src={imagePreview}
+              src={formData.imagePreview}
               alt="Uploaded preview"
               className="w-24 h-24 rounded-md object-cover"
               aria-label="Uploaded image"
@@ -128,10 +125,9 @@ const JoinFormStep3 = () => {
         </button>
       </>
     );
-  } else {
+  } else if (submitted) {
     content = (
       <div className="flex flex-col items-center justify-center text-center py-12">
-        {/* Custom Checkmark Icon */}
         <div className="w-24 h-24 rounded-full bg-[#94e3bb] flex items-center justify-center mb-6">
           <svg
             className="w-12 h-12 text-white"
