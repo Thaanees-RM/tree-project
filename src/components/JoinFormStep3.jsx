@@ -10,7 +10,6 @@ const JoinFormStep3 = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
-  // Load data from state or localStorage
   useEffect(() => {
     if (location.state) {
       setFormData(location.state);
@@ -64,7 +63,6 @@ const JoinFormStep3 = () => {
     });
   };
 
-  // Step indicator
   const steps = [
     { label: "Enter details", active: false },
     { label: "Upload Picture", active: false },
@@ -72,9 +70,10 @@ const JoinFormStep3 = () => {
   ];
 
   let content;
+
   if (errors.form) {
     content = (
-      <div className="mt-2 p-2 border border-red-500 bg-white text-red-500 text-sm text-center rounded-md">
+      <div className="mt-2 p-3 border border-red-500 bg-white text-red-500 text-sm text-center rounded-md">
         {errors.form}
       </div>
     );
@@ -83,7 +82,7 @@ const JoinFormStep3 = () => {
     content = (
       <>
         {/* Info Display */}
-        <div className="text-sm sm:text-base leading-7 text-gray-800 mb-6 space-y-1 px-4">
+        <div className="text-sm sm:text-base leading-7 text-gray-800 mb-6 space-y-1 px-2 sm:px-4">
           <p><span className="font-semibold">Name :</span> {name}</p>
           <p><span className="font-semibold">Email :</span> {formData.email}</p>
           <p><span className="font-semibold">Tree (planted) :</span> {formData.tree}</p>
@@ -110,14 +109,18 @@ const JoinFormStep3 = () => {
           <p className="text-[#01B157] font-medium">Verified</p>
         </div>
 
+        {/* Note */}
         <p className="text-sm text-gray-600 px-4 mb-6 text-center">
           <strong>Note:</strong> Your name will appear on your certificate.
         </p>
 
+        {/* Submit Button */}
         <button
           onClick={handleSubmit}
-          className={`w-full bg-[#01B157] text-white py-2 rounded-md font-semibold hover:bg-green-700 transition ${
-            isLoading ? "opacity-50 cursor-not-allowed" : ""
+          className={`w-full py-3 text-sm sm:text-base rounded-md font-semibold transition ${
+            isLoading
+              ? "bg-green-300 text-white opacity-50 cursor-not-allowed"
+              : "bg-[#01B157] text-white hover:bg-green-700"
           }`}
           disabled={isLoading}
         >
@@ -146,9 +149,8 @@ const JoinFormStep3 = () => {
         </div>
         <h2 className="text-xl font-semibold text-gray-800 mb-6">Successfully Submitted!</h2>
         <button
-          className="w-full bg-[#01B157] text-white py-2 rounded-md font-semibold hover:bg-green-700 transition"
+          className="w-full py-3 text-sm sm:text-base bg-[#01B157] text-white rounded-md font-semibold hover:bg-green-700 transition"
           onClick={handleGetCertificate}
-          aria-label="Get certificate"
         >
           Get Certificate
         </button>
@@ -157,14 +159,14 @@ const JoinFormStep3 = () => {
   }
 
   return (
-    <div className="bg-green-50 py-12 px-4 min-h-screen flex flex-col items-center justify-start">
-      <div className="bg-white rounded-2xl shadow-md w-full max-w-2xl p-6">
+    <div className="bg-green-50 py-10 px-4 sm:py-14 sm:px-6 min-h-screen flex flex-col items-center justify-start">
+      <div className="bg-white rounded-2xl shadow-md w-full max-w-2xl p-5 sm:p-8">
         {/* Step Indicator */}
-        <div className="flex justify-between items-center mb-8 gap-2">
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-2 mb-8">
           {steps.map((step, index) => (
             <div
               key={index}
-              className={`flex-1 text-center py-2 rounded-full font-medium text-sm sm:text-base ${
+              className={`w-full sm:w-auto text-center py-2 px-3 rounded-full font-medium text-sm sm:text-base ${
                 step.active ? "bg-[#94e3bb] text-white" : "bg-gray-100 text-gray-500"
               }`}
             >
@@ -172,6 +174,7 @@ const JoinFormStep3 = () => {
             </div>
           ))}
         </div>
+
         {content}
       </div>
     </div>

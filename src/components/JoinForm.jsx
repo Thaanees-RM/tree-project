@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 const JoinForm = () => {
   const navigate = useNavigate();
 
-  // Form state
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -61,34 +60,20 @@ const JoinForm = () => {
       localStorage.setItem("joinFormData", JSON.stringify(formData));
       await new Promise((resolve) => setTimeout(resolve, 500));
       navigate("/join/upload", { state: formData });
-      // resetForm(); // Uncomment this if you want to reset form after navigation
     } finally {
       setIsLoading(false);
     }
   };
 
-  const resetForm = () => {
-    setFormData({
-      firstName: "",
-      lastName: "",
-      email: "",
-      tree: "",
-      location: "",
-      acceptedTerms: false,
-      subscribe: false,
-    });
-    setErrors({});
-  };
-
   return (
-    <div className="bg-green-50 py-12 px-4 min-h-screen flex flex-col items-center justify-start">
-      <div className="bg-white rounded-2xl shadow-md w-full max-w-2xl p-6">
+    <div className="bg-green-50 min-h-screen py-10 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+      <div className="w-full max-w-2xl bg-white rounded-2xl shadow-md p-5 sm:p-8">
         {/* Step Indicator */}
-        <div className="flex justify-between items-center mb-8 gap-2">
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-2 mb-8">
           {steps.map((step, index) => (
             <div
               key={index}
-              className={`flex-1 text-center py-2 rounded-full font-medium text-sm sm:text-base ${
+              className={`w-full sm:w-auto text-center py-2 px-3 rounded-full font-medium text-sm sm:text-base ${
                 step.active ? "bg-green-600 text-white" : "bg-gray-100 text-gray-500"
               }`}
             >
@@ -98,10 +83,10 @@ const JoinForm = () => {
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-7">
           {/* First Name */}
           <div>
-            <label htmlFor="firstName" className="block font-medium mb-1 text-gray-700">First Name*</label>
+            <label htmlFor="firstName" className="block font-medium mb-1 text-gray-700 text-sm sm:text-base">First Name*</label>
             <input
               id="firstName"
               type="text"
@@ -111,7 +96,7 @@ const JoinForm = () => {
               onBlur={validateForm}
               aria-invalid={!!errors.firstName}
               aria-describedby={errors.firstName ? "firstName-error" : undefined}
-              className={`w-full border ${errors.firstName ? "border-red-500" : "border-gray-300"} rounded-md px-4 py-2 outline-none focus:ring-2 focus:ring-green-600 transition`}
+              className={`w-full border ${errors.firstName ? "border-red-500" : "border-gray-300"} rounded-md px-4 py-2 text-sm sm:text-base outline-none focus:ring-2 focus:ring-green-600 transition`}
               placeholder="First name"
             />
             {errors.firstName && (
@@ -121,7 +106,7 @@ const JoinForm = () => {
 
           {/* Last Name */}
           <div>
-            <label htmlFor="lastName" className="block font-medium mb-1 text-gray-700">Last Name*</label>
+            <label htmlFor="lastName" className="block font-medium mb-1 text-gray-700 text-sm sm:text-base">Last Name*</label>
             <input
               id="lastName"
               type="text"
@@ -131,7 +116,7 @@ const JoinForm = () => {
               onBlur={validateForm}
               aria-invalid={!!errors.lastName}
               aria-describedby={errors.lastName ? "lastName-error" : undefined}
-              className={`w-full border ${errors.lastName ? "border-red-500" : "border-gray-300"} rounded-md px-4 py-2 outline-none focus:ring-2 focus:ring-green-600 transition`}
+              className={`w-full border ${errors.lastName ? "border-red-500" : "border-gray-300"} rounded-md px-4 py-2 text-sm sm:text-base outline-none focus:ring-2 focus:ring-green-600 transition`}
               placeholder="Last name"
             />
             {errors.lastName && (
@@ -141,7 +126,7 @@ const JoinForm = () => {
 
           {/* Email */}
           <div>
-            <label htmlFor="email" className="block font-medium mb-1 text-gray-700">Email*</label>
+            <label htmlFor="email" className="block font-medium mb-1 text-gray-700 text-sm sm:text-base">Email*</label>
             <input
               id="email"
               type="email"
@@ -151,7 +136,7 @@ const JoinForm = () => {
               onBlur={validateForm}
               aria-invalid={!!errors.email}
               aria-describedby={errors.email ? "email-error" : undefined}
-              className={`w-full border ${errors.email ? "border-red-500" : "border-gray-300"} rounded-md px-4 py-2 outline-none focus:ring-2 focus:ring-green-600 transition`}
+              className={`w-full border ${errors.email ? "border-red-500" : "border-gray-300"} rounded-md px-4 py-2 text-sm sm:text-base outline-none focus:ring-2 focus:ring-green-600 transition`}
               placeholder="Email"
             />
             {errors.email && (
@@ -161,7 +146,7 @@ const JoinForm = () => {
 
           {/* Tree */}
           <div>
-            <label htmlFor="tree" className="block font-medium mb-1 text-gray-700">Tree (planted)*</label>
+            <label htmlFor="tree" className="block font-medium mb-1 text-gray-700 text-sm sm:text-base">Tree (planted)*</label>
             <input
               id="tree"
               type="text"
@@ -171,8 +156,8 @@ const JoinForm = () => {
               onBlur={validateForm}
               aria-invalid={!!errors.tree}
               aria-describedby={errors.tree ? "tree-error" : undefined}
-              className={`w-full border ${errors.tree ? "border-red-500" : "border-gray-300"} rounded-md px-4 py-2 outline-none focus:ring-2 focus:ring-green-600 transition`}
-              placeholder="Jack"
+              className={`w-full border ${errors.tree ? "border-red-500" : "border-gray-300"} rounded-md px-4 py-2 text-sm sm:text-base outline-none focus:ring-2 focus:ring-green-600 transition`}
+              placeholder="e.g., Jackfruit"
             />
             {errors.tree && (
               <p id="tree-error" className="text-red-500 text-sm mt-1">{errors.tree}</p>
@@ -181,7 +166,7 @@ const JoinForm = () => {
 
           {/* Location */}
           <div>
-            <label htmlFor="location" className="block font-medium mb-1 text-gray-700">Location*</label>
+            <label htmlFor="location" className="block font-medium mb-1 text-gray-700 text-sm sm:text-base">Location*</label>
             <input
               id="location"
               type="text"
@@ -191,8 +176,8 @@ const JoinForm = () => {
               onBlur={validateForm}
               aria-invalid={!!errors.location}
               aria-describedby={errors.location ? "location-error" : undefined}
-              className={`w-full border ${errors.location ? "border-red-500" : "border-gray-300"} rounded-md px-4 py-2 outline-none focus:ring-2 focus:ring-green-600 transition`}
-              placeholder="Colombo"
+              className={`w-full border ${errors.location ? "border-red-500" : "border-gray-300"} rounded-md px-4 py-2 text-sm sm:text-base outline-none focus:ring-2 focus:ring-green-600 transition`}
+              placeholder="e.g., Colombo"
             />
             {errors.location && (
               <p id="location-error" className="text-red-500 text-sm mt-1">{errors.location}</p>
@@ -200,7 +185,7 @@ const JoinForm = () => {
           </div>
 
           {/* Checkboxes */}
-          <div className="space-y-2">
+          <div className="space-y-3">
             <label className="flex items-center">
               <input
                 type="checkbox"
@@ -210,7 +195,7 @@ const JoinForm = () => {
                 className="mr-2 h-4 w-4 text-green-600 border-gray-300 rounded focus:ring-green-600"
                 aria-describedby={errors.acceptedTerms ? "acceptedTerms-error" : undefined}
               />
-              <span className="text-gray-700">I have accepted the Terms & Conditions.</span>
+              <span className="text-sm sm:text-base text-gray-700">I accept the Terms & Conditions</span>
             </label>
             {errors.acceptedTerms && (
               <p id="acceptedTerms-error" className="text-red-500 text-sm mt-1">{errors.acceptedTerms}</p>
@@ -224,7 +209,7 @@ const JoinForm = () => {
                 onChange={handleChange}
                 className="mr-2 h-4 w-4 text-green-600 border-gray-300 rounded focus:ring-green-600"
               />
-              <span className="text-gray-700">Subscribe for future updates</span>
+              <span className="text-sm sm:text-base text-gray-700">Subscribe for future updates</span>
             </label>
           </div>
 
@@ -232,8 +217,10 @@ const JoinForm = () => {
           <button
             type="submit"
             disabled={isLoading || !formData.acceptedTerms}
-            className={`w-full bg-green-600 text-white py-2 rounded-md font-semibold transition ${
-              isLoading || !formData.acceptedTerms ? "opacity-50 cursor-not-allowed" : "hover:bg-green-700"
+            className={`w-full py-3 text-sm sm:text-base font-semibold text-white rounded-md transition ${
+              isLoading || !formData.acceptedTerms
+                ? "bg-green-600 opacity-50 cursor-not-allowed"
+                : "bg-green-600 hover:bg-green-700"
             }`}
           >
             {isLoading ? "Processing..." : "Next"}
