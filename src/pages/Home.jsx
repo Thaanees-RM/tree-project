@@ -40,7 +40,11 @@ const Home = () => {
   return (
     <>
       {/* Main bg */}
-      <div className='flex flex-col gap-20 px-20 py-20 bg-[#E3FFEF]'>
+      <div className='flex flex-col gap-20 px-20 py-20 bg-[#E3FFEF] relative'>
+
+        {/* overlay gradient */}
+        <img src="/assets/Vector-2.png" alt="" className='absolute left-0 top-90'/>
+        <img src="/assets/Vector-3.png" alt="" className='absolute right-0 top-150'/> 
 
         {/* Hero Section */}
         <div className='flex flex-col gap-4 pb-20 relative'>
