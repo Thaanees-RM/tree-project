@@ -14,18 +14,22 @@ const JoinFormStep2 = () => {
   // Step 1 data from location.state
   const userDetails = location.state || {};
 
-  // Step indicator data
-  const steps = [
-    { label: "Enter details", active: false },
-    { label: "Upload Picture", active: true },
-    { label: "Submit", active: false },
-  ];
+  // Redirect if step 1 data is missing
+  useEffect(() => {
+    if (!userDetails.firstName || !userDetails.email) {
+      navigate("/join", { replace: true });
+    }
+  }, [userDetails, navigate]);
 
   // Cleanup preview URL to prevent memory leaks
   useEffect(() => {
     return () => {
       if (preview) {
-        URL.revokeObjectURL(preview);
+        try {
+          URL.revokeObjectURL(preview);
+        } catch (err) {
+          console.warn("Failed to revoke preview URL", err);
+        }
       }
     };
   }, [preview]);
@@ -53,9 +57,9 @@ const JoinFormStep2 = () => {
       return;
     }
 
-    // Validate file size (2MB limit)
-    if (selectedFile.size > 2 * 1024 * 1024) {
-      setErrors({ file: "Image size must be under 2MB." });
+    // Validate file size (7MB limit)
+    if (selectedFile.size > 7 * 1024 * 1024) {
+      setErrors({ file: "Image size must be under 7MB." });
       setPreview(null);
       setFile(null);
       return;
@@ -63,10 +67,13 @@ const JoinFormStep2 = () => {
 
     // Revoke previous preview URL
     if (preview) {
-      URL.revokeObjectURL(preview);
+      try {
+        URL.revokeObjectURL(preview);
+      } catch (err) {
+        console.warn("Failed to revoke previous URL", err);
+      }
     }
 
-    // Generate new preview
     const imageUrl = URL.createObjectURL(selectedFile);
     setPreview(imageUrl);
     setFile(selectedFile);
@@ -75,7 +82,11 @@ const JoinFormStep2 = () => {
 
   const handleRemoveImage = () => {
     if (preview) {
-      URL.revokeObjectURL(preview);
+      try {
+        URL.revokeObjectURL(preview);
+      } catch (err) {
+        console.warn("Failed to revoke preview URL", err);
+      }
     }
     setPreview(null);
     setFile(null);
@@ -86,13 +97,11 @@ const JoinFormStep2 = () => {
   };
 
   const handleNext = async () => {
-    // Validate userDetails from Step 1
     if (!userDetails.firstName || !userDetails.email) {
       setErrors({ form: "Please complete the first step before uploading an image." });
       return;
     }
 
-    // Validate file
     if (!file) {
       setErrors({ file: "*The picture should include the member & the tree." });
       return;
@@ -100,14 +109,11 @@ const JoinFormStep2 = () => {
 
     setIsLoading(true);
     try {
-      // Persist data to localStorage
       const step2Data = { ...userDetails, imageFile: file.name, imagePreview: preview };
       localStorage.setItem("joinFormStep2Data", JSON.stringify(step2Data));
 
-      // Simulate async operation (replace with API call if needed)
       await new Promise((resolve) => setTimeout(resolve, 500));
 
-      // Navigate to Step 3
       navigate("/join/submit", { state: step2Data });
     } catch (error) {
       console.error("Error in handleNext:", error);
@@ -116,6 +122,13 @@ const JoinFormStep2 = () => {
       setIsLoading(false);
     }
   };
+
+  // Step indicator data
+  const steps = [
+    { label: "Enter details", active: false },
+    { label: "Upload Picture", active: true },
+    { label: "Submit", active: false },
+  ];
 
   return (
     <div className="bg-green-50 py-12 px-4 min-h-screen flex flex-col items-center justify-start">
@@ -144,20 +157,28 @@ const JoinFormStep2 = () => {
             aria-describedby={errors.file ? "file-error" : undefined}
           >
             {preview ? (
-              <img src={preview} alt="Preview of uploaded file" className="h-full object-contain" />
+              <img
+                src={preview}
+                alt="Preview of uploaded image"
+                role="img"
+                className="h-full object-contain"
+              />
             ) : (
               <div className="flex flex-col items-center">
                 <FiUpload size={48} className="text-gray-500" />
-                <p className="text-gray-500 mt-2 text-sm">Upload an image (JPEG, PNG, GIF, &lt;2MB)</p>
+                <p className="text-gray-500 mt-2 text-sm">Upload an image (JPEG, PNG, GIF, &lt;7MB)</p>
               </div>
             )}
           </button>
           <input
             type="file"
+            id="fileUpload"
+            name="fileUpload"
             accept="image/jpeg,image/png,image/gif"
             ref={fileInputRef}
             className="hidden"
             onChange={handleFileChange}
+            aria-label="Upload image file of the tree and member"
           />
           {preview && (
             <button
@@ -190,6 +211,7 @@ const JoinFormStep2 = () => {
           className={`w-full py-2 rounded-md font-semibold mt-6 transition ${
             isLoading ? "bg-green-300 text-white" : "bg-green-600 text-white hover:bg-green-700"
           }`}
+          disabled={isLoading}
         >
           {isLoading ? "Processing..." : "Next"}
         </button>

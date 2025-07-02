@@ -15,29 +15,24 @@ const JoinForm = () => {
     subscribe: false,
   });
 
-  // Error and loading states
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
-  // Step indicator data
   const steps = [
     { label: "Enter details", active: true },
     { label: "Upload Picture", active: false },
     { label: "Submit", active: false },
   ];
 
-  // Handle input changes
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
-    // Clear error for the field being edited
     setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
-  // Validate form
   const validateForm = () => {
     const newErrors = {};
     if (!formData.firstName.trim()) newErrors.firstName = "First name is required.";
@@ -57,21 +52,32 @@ const JoinForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
 
     setIsLoading(true);
     try {
-      // Persist form data to localStorage
       localStorage.setItem("joinFormData", JSON.stringify(formData));
-      // Simulate async operation (e.g., API call)
       await new Promise((resolve) => setTimeout(resolve, 500));
       navigate("/join/upload", { state: formData });
+      // resetForm(); // Uncomment this if you want to reset form after navigation
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const resetForm = () => {
+    setFormData({
+      firstName: "",
+      lastName: "",
+      email: "",
+      tree: "",
+      location: "",
+      acceptedTerms: false,
+      subscribe: false,
+    });
+    setErrors({});
   };
 
   return (
@@ -92,119 +98,104 @@ const JoinForm = () => {
         </div>
 
         {/* Form */}
-        <div className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-5">
           {/* First Name */}
           <div>
-            <label htmlFor="firstName" className="block font-medium mb-1 text-gray-700">
-              First Name*
-            </label>
+            <label htmlFor="firstName" className="block font-medium mb-1 text-gray-700">First Name*</label>
             <input
               id="firstName"
               type="text"
               name="firstName"
-              placeholder="First name"
               value={formData.firstName}
               onChange={handleChange}
               onBlur={validateForm}
-              className={`w-full border ${errors.firstName ? "border-red-500" : "border-gray-300"} rounded-md px-4 py-2 outline-none focus:ring-2 focus:ring-green-600 transition`}
+              aria-invalid={!!errors.firstName}
               aria-describedby={errors.firstName ? "firstName-error" : undefined}
+              className={`w-full border ${errors.firstName ? "border-red-500" : "border-gray-300"} rounded-md px-4 py-2 outline-none focus:ring-2 focus:ring-green-600 transition`}
+              placeholder="First name"
             />
             {errors.firstName && (
-              <p id="firstName-error" className="text-red-500 text-sm mt-1">
-                {errors.firstName}
-              </p>
+              <p id="firstName-error" className="text-red-500 text-sm mt-1">{errors.firstName}</p>
             )}
           </div>
 
           {/* Last Name */}
           <div>
-            <label htmlFor="lastName" className="block font-medium mb-1 text-gray-700">
-              Last Name*
-            </label>
+            <label htmlFor="lastName" className="block font-medium mb-1 text-gray-700">Last Name*</label>
             <input
               id="lastName"
               type="text"
               name="lastName"
-              placeholder="Last name"
               value={formData.lastName}
               onChange={handleChange}
               onBlur={validateForm}
-              className={`w-full border ${errors.lastName ? "border-red-500" : "border-gray-300"} rounded-md px-4 py-2 outline-none focus:ring-2 focus:ring-green-600 transition`}
+              aria-invalid={!!errors.lastName}
               aria-describedby={errors.lastName ? "lastName-error" : undefined}
+              className={`w-full border ${errors.lastName ? "border-red-500" : "border-gray-300"} rounded-md px-4 py-2 outline-none focus:ring-2 focus:ring-green-600 transition`}
+              placeholder="Last name"
             />
             {errors.lastName && (
-              <p id="lastName-error" className="text-red-500 text-sm mt-1">
-                {errors.lastName}
-              </p>
+              <p id="lastName-error" className="text-red-500 text-sm mt-1">{errors.lastName}</p>
             )}
           </div>
 
           {/* Email */}
           <div>
-            <label htmlFor="email" className="block font-medium mb-1 text-gray-700">
-              Email*
-            </label>
+            <label htmlFor="email" className="block font-medium mb-1 text-gray-700">Email*</label>
             <input
               id="email"
               type="email"
               name="email"
-              placeholder="Email"
               value={formData.email}
               onChange={handleChange}
               onBlur={validateForm}
-              className={`w-full border ${errors.email ? "border-red-500" : "border-gray-300"} rounded-md px-4 py-2 outline-none focus:ring-2 focus:ring-green-600 transition`}
+              aria-invalid={!!errors.email}
               aria-describedby={errors.email ? "email-error" : undefined}
+              className={`w-full border ${errors.email ? "border-red-500" : "border-gray-300"} rounded-md px-4 py-2 outline-none focus:ring-2 focus:ring-green-600 transition`}
+              placeholder="Email"
             />
             {errors.email && (
-              <p id="email-error" className="text-red-500 text-sm mt-1">
-                {errors.email}
-              </p>
+              <p id="email-error" className="text-red-500 text-sm mt-1">{errors.email}</p>
             )}
           </div>
 
           {/* Tree */}
           <div>
-            <label htmlFor="tree" className="block font-medium mb-1 text-gray-700">
-              Tree (planted)*
-            </label>
+            <label htmlFor="tree" className="block font-medium mb-1 text-gray-700">Tree (planted)*</label>
             <input
               id="tree"
               type="text"
               name="tree"
-              placeholder="Jack"
               value={formData.tree}
               onChange={handleChange}
               onBlur={validateForm}
-              className={`w-full border ${errors.tree ? "border-red-500" : "border-gray-300"} rounded-md px-4 py-2 outline-none focus:ring-2 focus:ring-green-600 transition`}
+              aria-invalid={!!errors.tree}
               aria-describedby={errors.tree ? "tree-error" : undefined}
+              className={`w-full border ${errors.tree ? "border-red-500" : "border-gray-300"} rounded-md px-4 py-2 outline-none focus:ring-2 focus:ring-green-600 transition`}
+              placeholder="Jack"
             />
             {errors.tree && (
-              <p id="tree-error" className="text-red-500 text-sm mt-1">
-                {errors.tree}
-              </p>
+              <p id="tree-error" className="text-red-500 text-sm mt-1">{errors.tree}</p>
             )}
           </div>
 
           {/* Location */}
           <div>
-            <label htmlFor="location" className="block font-medium mb-1 text-gray-700">
-              Location*
-            </label>
+            <label htmlFor="location" className="block font-medium mb-1 text-gray-700">Location*</label>
             <input
               id="location"
               type="text"
               name="location"
-              placeholder="Colombo"
               value={formData.location}
               onChange={handleChange}
               onBlur={validateForm}
-              className={`w-full border ${errors.location ? "border-red-500" : "border-gray-300"} rounded-md px-4 py-2 outline-none focus:ring-2 focus:ring-green-600 transition`}
+              aria-invalid={!!errors.location}
               aria-describedby={errors.location ? "location-error" : undefined}
+              className={`w-full border ${errors.location ? "border-red-500" : "border-gray-300"} rounded-md px-4 py-2 outline-none focus:ring-2 focus:ring-green-600 transition`}
+              placeholder="Colombo"
             />
             {errors.location && (
-              <p id="location-error" className="text-red-500 text-sm mt-1">
-                {errors.location}
-              </p>
+              <p id="location-error" className="text-red-500 text-sm mt-1">{errors.location}</p>
             )}
           </div>
 
@@ -222,10 +213,9 @@ const JoinForm = () => {
               <span className="text-gray-700">I have accepted the Terms & Conditions.</span>
             </label>
             {errors.acceptedTerms && (
-              <p id="acceptedTerms-error" className="text-red-500 text-sm mt-1">
-                {errors.acceptedTerms}
-              </p>
+              <p id="acceptedTerms-error" className="text-red-500 text-sm mt-1">{errors.acceptedTerms}</p>
             )}
+
             <label className="flex items-center">
               <input
                 type="checkbox"
@@ -238,21 +228,17 @@ const JoinForm = () => {
             </label>
           </div>
 
-          {/* Form-level error */}
-          {errors.form && (
-            <p className="text-red-500 text-sm mt-2">{errors.form}</p>
-          )}
-
           {/* Submit Button */}
           <button
-            type="button"
-            onClick={handleSubmit}
-            className={`w-full bg-green-600 text-white py-2 rounded-md font-semibold hover:bg-green-700 transition ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
-            disabled={isLoading}
+            type="submit"
+            disabled={isLoading || !formData.acceptedTerms}
+            className={`w-full bg-green-600 text-white py-2 rounded-md font-semibold transition ${
+              isLoading || !formData.acceptedTerms ? "opacity-50 cursor-not-allowed" : "hover:bg-green-700"
+            }`}
           >
             {isLoading ? "Processing..." : "Next"}
           </button>
-        </div>
+        </form>
       </div>
     </div>
   );
