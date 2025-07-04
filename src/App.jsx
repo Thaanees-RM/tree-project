@@ -1,26 +1,19 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import JoinForm from './components/JoinForm';
-import JoinFormStep2 from './components/JoinFormStep2';
-import JoinFormStep3 from './components/JoinFormStep3'; 
-import Certificate from './components/Certificate';
+import React from 'react'
+import { Routes, Route,} from 'react-router-dom';
+import Header from './components/Header'
+import Footer from './components/Footer'
+import Home from './pages/Home';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 
 const App = () => {
   return (
     <>
-      <Header />
-
-      {/* Main content */}
+      <Header/>
       <Routes>
-        <Route path="/join" element={<JoinForm />} />
-        <Route path="/join/upload" element={<JoinFormStep2 />} />
-        <Route path="/join/submit" element={<JoinFormStep3 />} />
-        <Route path="/certificate" element={<Certificate />} />
-      </Routes>
-
-      <Footer />
+        <Route path="/home" element={<Home />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy/>} />
+      </Routes>      
+      <Footer/>
     </>
   );
 };

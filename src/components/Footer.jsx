@@ -12,7 +12,7 @@ import {
 const Footer = () => {
   return (
     <footer 
-      className='relative flex flex-col justify-between px-20 py-8 bg-[#005D2D] w-full h-125'
+      className='relative flex flex-col justify-between px-10 md:px-20 py-8 bg-[#005D2D] w-full md:h-125'
       style={{
     backgroundImage: "url('/assets/Vector.png')",
     backgroundRepeat: 'no-repeat',
@@ -22,7 +22,7 @@ const Footer = () => {
       
 
       {/* Footer content */}
-      <div className='flex flex-row justify-between items-start py-10'>
+      <div className='flex flex-col md:flex-row justify-between items-start py-10'>
         {/* Social media links */}
         <div className='flex flex-col gap-4'>
           <h2 className='text-2xl text-white font-bold'>
@@ -41,30 +41,33 @@ const Footer = () => {
               </button>
             </form>
           </div>
-          <h2 className='text-2xl text-white/70 font-bold'>
+          <div className='hidden md:flex flex-col gap-4'>
+            <h2 className='text-2xl text-white/70 font-bold'>
             Social Links
-          </h2>
-          {/* Social media icons */}
-          <div className="flex gap-4 justify-start items-center text-2xl text-white">
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
-              <FaFacebookF className="" />
-            </a>
-            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">
-              <FaYoutube className="" />
-            </a>
-            <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer">
-              <FaTiktok className="" />
-            </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
-              <FaLinkedinIn className="" />
-            </a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
-              <FaInstagram className="" />
-            </a>
+            </h2>
+            {/* Social media icons */}
+            <div className="flex gap-4 justify-start items-center text-2xl text-white">
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+                <FaFacebookF className="" />
+              </a>
+              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">
+                <FaYoutube className="" />
+              </a>
+              <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer">
+                <FaTiktok className="" />
+              </a>
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+                <FaLinkedinIn className="" />
+              </a>
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+                <FaInstagram className="" />
+              </a>
+            </div>
           </div>
+          
         </div>
         {/* Contact information */}
-        <div className='flex flex-row items-start gap-26 pr-20'>
+        <div className='flex flex-col md:flex-row items-start gap-10 md:gap-26 pr-20 pt-10 md:pt-0'>
           {/* Quick Links */}
           <div>
             <h2 className='text-2xl text-white font-bold mb-6'>
@@ -90,11 +93,37 @@ const Footer = () => {
               <a href="" className='font-normal text-base text-white'>r2r@gmail.com</a>
             </div>
           </div>
+
+          <div className='flex flex-col gap-4 z-10 md:hidden'>
+            <h2 className='text-2xl text-white/70 font-bold'>
+            Follow Us
+            </h2>
+            {/* Social media icons */}
+            <div className="flex gap-4 justify-start items-center text-2xl text-white">
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+                <FaFacebookF className="" />
+              </a>
+              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">
+                <FaYoutube className="" />
+              </a>
+              <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer">
+                <FaTiktok className="" />
+              </a>
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+                <FaLinkedinIn className="" />
+              </a>
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+                <FaInstagram className="" />
+              </a>
+            </div>
+          </div>
+
+          
         </div>
       </div>
 
       {/* Copyright section */}
-      <div className='flex flex-row justify-between items-center text-white text-base font-normal'>
+      <div className='flex flex-col md:flex-row justify-between items-center text-white text-base font-normal gap-2 '>
         <p>
           Copyright &copy; 2025. All rights reserved.
         </p>
