@@ -71,6 +71,7 @@
 // export default Header
 
 import React, { useState } from "react";
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -84,7 +85,10 @@ const Header = () => {
         </div>
         <div className='flex flex-row gap-6 items-center'>
           <a href="privacy-policy" className='font-medium text-base text-black'>Privacy Policy</a>
-          <button className='font-medium text-base text-white bg-[#006A34] w-20 py-2 rounded-sm'>Join</button>
+          <Link to="/join">
+            <button className='font-medium text-base text-white bg-[#006A34] w-20 py-2 rounded-sm cursor-pointer'>Join</button>
+          </Link>
+          
         </div>
       </header>
 
@@ -93,7 +97,10 @@ const Header = () => {
         <a href="home" className='font-bold text-2xl text-[#006A34]'>LOGO</a>
 
         <div className='flex items-center gap-4'>
-          <button className='font-medium text-base text-white bg-[#006A34] w-20 py-2 rounded-sm'>Join</button>
+          <Link to="/join">
+            <button className='font-medium text-base text-white bg-[#006A34] w-20 py-2 rounded-sm'>Join</button>
+          </Link>
+          
 
           {/* Hamburger Button */}
           <button
@@ -133,7 +140,11 @@ const Header = () => {
           </div>
           <div className='flex flex-col gap-5 items-center justify-center h-[60%]'>
             <a href="privacy-policy" className='font-medium text-lg text-black'>Privacy Policy</a>
-            <button className='font-medium text-base text-white bg-[#006A34] w-34 py-2 rounded-sm'>Join</button>
+            <Link to="/join">
+              <button className='font-medium text-base text-white bg-[#006A34] w-34 py-2 rounded-sm'>
+                Join
+              </button>
+            </Link>
           </div>
         </div>
       )}
