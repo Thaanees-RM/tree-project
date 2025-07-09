@@ -118,7 +118,7 @@ const JoinFormStep2 = () => {
   };
 
   return (
-    <div className="bg-green-50 py-12 px-4 min-h-screen flex flex-col items-center justify-start">
+    <div className="bg-[#E3FFEF] py-12 px-4 min-h-screen flex flex-col items-center justify-start">
       <div className="bg-white rounded-2xl shadow-md w-full max-w-2xl p-6">
         {/* Step Indicator */}
         <div className="flex justify-between items-center mb-8 gap-2">

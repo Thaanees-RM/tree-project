@@ -10,48 +10,61 @@ const JoinFormStep3 = () => {
 
   // Step 1 and 2 data from location.state
   const {
-    firstName = "Shavon",
-    lastName = "Fernando",
-    email = "shavon1234@gmail.com",
-    tree = "Jack Tree",
-    location: locationText = "Colombo",
-    imagePreview, // from Step 2
+    firstName,
+    lastName,
+    email,
+    tree,
+    location: locationText,
+    acceptedTerms,
+    subscribe,
+    imageFile,
+    imagePreview,
   } = location.state || {};
 
   const name = `${firstName} ${lastName}`;
 
   // Validate required data
   useEffect(() => {
-    if (!firstName || !email) {
+    if (!firstName || !email || !imagePreview) {
       setErrors({ form: "Missing required data from previous steps. Please start over." });
     }
-  }, [firstName, email]);
+  }, [firstName, email, imagePreview]);
 
   const handleSubmit = async () => {
     if (errors.form) return;
 
     setIsLoading(true);
     try {
-      // Prepare submission data
-      const certificateData = {
-        name,
-        email,
-        tree,
-        location: locationText,
-        image: imagePreview,
-      };
+      const formData = new FormData();
+      formData.append("firstName", firstName);
+      formData.append("lastName", lastName);
+      formData.append("email", email);
+      formData.append("tree", tree);
+      formData.append("location", locationText);
+      formData.append("acceptedTerms", acceptedTerms ? "true" : "false");
+      formData.append("subscribe", subscribe ? "true" : "false");
+      formData.append("image", imageFile);
 
-      // Persist data to localStorage (remove if using backend)
-      localStorage.setItem("joinFormSubmissionData", JSON.stringify(certificateData));
+      const res = await fetch("http://localhost:3000/api/users", {
+        method: "POST",
+        body: formData,
+      });
 
-      // Simulate backend submission (replace with API call if needed)
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      if (!res.ok) {
+        const errData = await res.json();
+        throw new Error(errData.error || "Submission failed");
+      }
 
       setSubmitted(true);
       setErrors({});
+
+      // Clear localStorage here AFTER successful submission
+    localStorage.removeItem("joinFormData");
+    localStorage.removeItem("joinFormStep2Data");
+
     } catch (err) {
       console.error("Form submission failed:", err);
-      setErrors({ form: "Submission failed. Please try again." });
+      setErrors({ form: err.message });
     } finally {
       setIsLoading(false);
     }
@@ -161,7 +174,7 @@ const JoinFormStep3 = () => {
   }
 
   return (
-    <div className="bg-green-50 py-12 px-4 min-h-screen flex flex-col items-center justify-start">
+    <div className="bg-[#E3FFEF] py-12 px-4 min-h-screen flex flex-col items-center justify-start">
       <div className="bg-white rounded-2xl shadow-md w-full max-w-2xl p-6">
         {/* Step Indicator */}
         <div className="flex justify-between items-center mb-8 gap-2">
