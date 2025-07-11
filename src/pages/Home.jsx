@@ -2,6 +2,7 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { Link } from 'react-router-dom';
 
 
 const Home = () => {
@@ -59,18 +60,23 @@ const Home = () => {
               Join thousands of others in creating a greener, healthier planet—one tree at a time.
             </p>
             <div data-aos='fade-in' data-aos-delay='2000' className='flex flex-row gap-4 mt-8'>
-              <button className='flex flex-row items-center justify-center gap-2 text-base font-medium text-white bg-[#006A34] rounded-sm py-3 w-50 group cursor-pointer'>
-                <p className='translate-x-2 transition-all duration-300 group-hover:-translate-x-1'>
-                  Be a Member
-                </p>
-                <img src="/assets/handshake.png" alt="" className='opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300' />
-              </button>
-              <button className='flex flex-row items-center justify-center gap-2 text-base font-medium text-[#006A34] bg-none border-[1px] border-[#006A34] rounded-sm py-3 w-50 group cursor-pointer'>
-                <p className='translate-x-2 transition-all duration-300 group-hover:-translate-x-1'>
-                  How to Join
-                </p>
-                <img src="/assets/arrow-down.png" alt="" className='opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300' />
-              </button>
+              <a href="/join">
+                <button className='flex flex-row items-center justify-center gap-2 text-base font-medium text-white bg-[#006A34] rounded-sm py-3 w-50 group cursor-pointer'>
+                  <p className='translate-x-2 transition-all duration-300 group-hover:-translate-x-1'>
+                    Be a Member
+                  </p>
+                  <img src="/assets/handshake.png" alt="" className='opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300' />
+                </button>
+              </a>
+              <a href="#join-section">
+                <button className='flex flex-row items-center justify-center gap-2 text-base font-medium text-[#006A34] bg-none border-[1px] border-[#006A34] rounded-sm py-3 w-50 group cursor-pointer'>
+                  <p className='translate-x-2 transition-all duration-300 group-hover:-translate-x-1'>
+                    How to Join
+                  </p>
+                  <img src="/assets/arrow-down.png" alt="" className='opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300' />
+                </button>
+              </a>
+              
             </div>
           </div>
 
@@ -112,19 +118,23 @@ const Home = () => {
             <p data-aos='fade-in' data-aos-delay='1600' className='text-base text-center font-medium text-black'>
               Join thousands of others in creating a greener, healthier planet—one tree at a time.
             </p>
-            <div data-aos='fade-in' data-aos-delay='2000' className='flex flex-col gap-4 mt-8'>
-              <button className='flex flex-row items-center justify-center gap-2 text-base font-medium text-white bg-[#006A34] rounded-sm py-3 group cursor-pointer'>
-                <p className='translate-x-2 transition-all duration-300 group-hover:-translate-x-1'>
-                  Be a Member
-                </p>
-                <img src="/assets/handshake.png" alt="" className='opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300' />
-              </button>
-              <button className='flex flex-row items-center justify-center gap-2 text-base font-medium text-[#006A34] bg-none border-[1px] border-[#006A34] rounded-sm py-3 group cursor-pointer'>
-                <p className='translate-x-2 transition-all duration-300 group-hover:-translate-x-1'>
-                  How to Join
-                </p>
-                <img src="/assets/arrow-down.png" alt="" className='opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300' />
-              </button>
+            <div data-aos='fade-in' data-aos-delay='2000' className='flex flex-col gap-4 mt-8 items-center justify-center'>
+              <Link to="/join">
+                <button className='flex flex-row items-center justify-center gap-2 text-base font-medium text-white bg-[#006A34] rounded-sm py-3 w-60 group cursor-pointer'>
+                  <p className='translate-x-2 transition-all duration-300 group-hover:-translate-x-1'>
+                    Be a Member
+                  </p>
+                  <img src="/assets/handshake.png" alt="" className='opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300' />
+                </button>
+              </Link>
+              <Link to="#join-section">
+                <button className='flex flex-row items-center justify-center gap-2 text-base font-medium text-[#006A34] bg-none border-[1px] border-[#006A34] rounded-sm py-3 w-60 group cursor-pointer'>
+                  <p className='translate-x-2 transition-all duration-300 group-hover:-translate-x-1'>
+                    How to Join
+                  </p>
+                  <img src="/assets/arrow-down.png" alt="" className='opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300' />
+                </button>
+              </Link>
             </div>
           </div>
 
@@ -235,7 +245,7 @@ const Home = () => {
         </div>
 
         {/* How to Join */}
-        <div className='flex flex-col gap-10 items-center justify-center py-10 border-5 border-[#005D2D] rounded-3xl md:mt-20' 
+        <div className='flex flex-col gap-10 items-center justify-center py-10 border-5 border-[#005D2D] rounded-3xl md:mt-20' id="join-section" 
         data-aos="fade-up" data-aos-delay="200">
           <h1 className='text-4xl md:text-5xl font-bold text-[#006A34]' data-aos="fade-up" data-aos-delay="400">
             How to Join
