@@ -179,7 +179,7 @@ const JoinFormStep3 = () => {
         <button
 
           className="w-full bg-[#01B157] text-white py-2 rounded-md font-semibold hover:bg-green-700 transition"
-          onClick={handleGetCertificate}
+          onClick={() => navigate('/')}
           aria-label="Get certificate"
 
         >
