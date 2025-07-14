@@ -6,10 +6,12 @@ const JoinFormStep2 = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const fileInputRef = useRef(null);
+
   const [preview, setPreview] = useState(null);
   const [file, setFile] = useState(null);
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+
 
   // Step 1 data from location.state
   const userDetails = location.state || {};
@@ -26,6 +28,7 @@ const JoinFormStep2 = () => {
     return () => {
       if (preview) {
         URL.revokeObjectURL(preview);  
+
       }
     };
   }, [preview]);
@@ -44,7 +47,7 @@ const JoinFormStep2 = () => {
       return;
     }
 
-    // Validate file type
+
     const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
     if (!allowedTypes.includes(selectedFile.type)) {
       setErrors({ file: "Please upload a JPEG, PNG, or GIF image." });
@@ -53,13 +56,17 @@ const JoinFormStep2 = () => {
       return;
     }
 
+
     // Validate file size (2MB limit)
-    if (selectedFile.size > 2 * 1024 * 1024) {
-      setErrors({ file: "Image size must be under 2MB." });
+ 
+    if (selectedFile.size > 7 * 1024 * 1024) {
+      setErrors({ file: "Image size must be under 7MB." });
+
       setPreview(null);
       setFile(null);
       return;
     }
+
 
     // Revoke previous preview URL
     if (preview) {
@@ -67,6 +74,7 @@ const JoinFormStep2 = () => {
     }
 
     // Generate new preview
+
     const imageUrl = URL.createObjectURL(selectedFile);
     setPreview(imageUrl);
     setFile(selectedFile);
@@ -75,7 +83,13 @@ const JoinFormStep2 = () => {
 
   const handleRemoveImage = () => {
     if (preview) {
-      URL.revokeObjectURL(preview);
+
+      try {
+        URL.revokeObjectURL(preview);
+      } catch (err) {
+        console.warn("Failed to revoke preview URL", err);
+      }
+
     }
     setPreview(null);
     setFile(null);
@@ -86,13 +100,13 @@ const JoinFormStep2 = () => {
   };
 
   const handleNext = async () => {
-    // Validate userDetails from Step 1
+
     if (!userDetails.firstName || !userDetails.email) {
       setErrors({ form: "Please complete the first step before uploading an image." });
       return;
     }
 
-    // Validate file
+
     if (!file) {
       setErrors({ file: "*The picture should include the member & the tree." });
       return;
@@ -100,6 +114,7 @@ const JoinFormStep2 = () => {
 
     setIsLoading(true);
     try {
+
       // Persist data to localStorage
       const step2Data = { ...userDetails, imageFile: file.name, imagePreview: preview };
       localStorage.setItem("joinFormStep2Data", JSON.stringify(step2Data));
@@ -108,6 +123,7 @@ const JoinFormStep2 = () => {
       await new Promise((resolve) => setTimeout(resolve, 500));
 
       // Navigate to Step 3
+
       navigate("/join/submit", { state: step2Data });
     } catch (error) {
       console.error("Error in handleNext:", error);
@@ -116,6 +132,7 @@ const JoinFormStep2 = () => {
       setIsLoading(false);
     }
   };
+
 
   return (
     <div className="bg-[#E3FFEF] py-12 px-4 min-h-screen flex flex-col items-center justify-start">
@@ -126,6 +143,7 @@ const JoinFormStep2 = () => {
             <div
               key={index}
               className={`flex-1 text-center py-2 rounded-full font-medium text-sm sm:text-base ${
+
                 step.active ? "bg-green-600 text-white" : "bg-gray-100 text-gray-500"
               }`}
             >
@@ -138,12 +156,15 @@ const JoinFormStep2 = () => {
         <div>
           <button
             type="button"
+
             className="w-full h-64 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center cursor-pointer bg-gray-100 hover:bg-gray-200 transition"
+
             onClick={handleUploadClick}
             aria-label="Upload an image of the member and the tree"
             aria-describedby={errors.file ? "file-error" : undefined}
           >
             {preview ? (
+
               <img src={preview} alt="Preview of uploaded file" className="h-full object-contain" />
             ) : (
               <div className="flex flex-col items-center">
@@ -154,11 +175,14 @@ const JoinFormStep2 = () => {
           </button>
           <input
             type="file"
+
             accept="image/jpeg,image/png,image/gif"
             ref={fileInputRef}
             className="hidden"
             onChange={handleFileChange}
+
           />
+
           {preview && (
             <button
               type="button"
@@ -168,14 +192,17 @@ const JoinFormStep2 = () => {
               Remove Image
             </button>
           )}
+
           {errors.file && (
             <div
               id="file-error"
               className="mt-2 p-2 border border-red-500 bg-white text-red-500 text-sm text-center rounded-md"
+
             >
               {errors.file}
             </div>
           )}
+
           {errors.form && (
             <div className="mt-2 p-2 border border-red-500 bg-white text-red-500 text-sm text-center rounded-md">
               {errors.form}
@@ -187,9 +214,11 @@ const JoinFormStep2 = () => {
         <button
           type="button"
           onClick={handleNext}
+
           className={`w-full py-2 rounded-md font-semibold mt-6 transition ${
             isLoading ? "bg-green-300 text-white" : "bg-green-600 text-white hover:bg-green-700"
           }`}
+
         >
           {isLoading ? "Processing..." : "Next"}
         </button>
@@ -198,4 +227,6 @@ const JoinFormStep2 = () => {
   );
 };
 
+
 export default JoinFormStep2;
+

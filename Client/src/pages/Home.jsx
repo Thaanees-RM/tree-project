@@ -1,3 +1,4 @@
+
 import React from 'react'
 import { useState, useEffect } from 'react';
 import AOS from 'aos';
@@ -21,6 +22,7 @@ const Home = () => {
       img: '/assets/vision.png',
       text:
         'We envision a world where environmental restoration is driven by collective action. Through accessible, community-powered efforts like tree planting, we strive to foster a planet where every individual feels empowered to protect, preserve, and our natural ecosystems for generations to come.',
+
     },
   ];
 
@@ -31,11 +33,14 @@ const Home = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % slides.length);
+
     }, 2000); // change every 2 seconds
+
     return () => clearInterval(interval);
   }, []);
 
   const current = slides[index];
+
 
 
   return (
@@ -319,3 +324,4 @@ const Home = () => {
 }
 
 export default Home
+

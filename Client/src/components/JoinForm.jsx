@@ -4,7 +4,9 @@ import { useNavigate } from "react-router-dom";
 const JoinForm = () => {
   const navigate = useNavigate();
 
+
   // Form state
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -15,11 +17,13 @@ const JoinForm = () => {
     subscribe: false,
   });
 
+
   // Error and loading states
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
   // Step indicator data
+
   const steps = [
     { label: "Enter details", active: true },
     { label: "Upload Picture", active: false },
@@ -27,17 +31,20 @@ const JoinForm = () => {
   ];
 
   // Handle input changes
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
+
     // Clear error for the field being edited
     setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
   // Validate form
+
   const validateForm = () => {
     const newErrors = {};
     if (!formData.firstName.trim()) newErrors.firstName = "First name is required.";
@@ -57,16 +64,20 @@ const JoinForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+
   // Handle form submission
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
 
     setIsLoading(true);
     try {
+
       // Persist form data to localStorage
       localStorage.setItem("joinFormData", JSON.stringify(formData));
       // Simulate async operation (e.g., API call)
+
       await new Promise((resolve) => setTimeout(resolve, 500));
       navigate("/join/upload", { state: formData });
     } finally {
@@ -75,6 +86,7 @@ const JoinForm = () => {
   };
 
   return (
+
     <div className="bg-[#E3FFEF] py-12 px-4 min-h-screen flex flex-col items-center justify-start">
       <div className="bg-white rounded-2xl shadow-md w-full max-w-2xl p-6">
         {/* Step Indicator */}
@@ -83,6 +95,7 @@ const JoinForm = () => {
             <div
               key={index}
               className={`flex-1 text-center py-2 rounded-full font-medium text-sm sm:text-base ${
+
                 step.active ? "bg-green-600 text-white" : "bg-gray-100 text-gray-500"
               }`}
             >
@@ -92,16 +105,19 @@ const JoinForm = () => {
         </div>
 
         {/* Form */}
+
         <div className="space-y-5">
           {/* First Name */}
           <div>
             <label htmlFor="firstName" className="block font-medium mb-1 text-gray-700">
               First Name*
             </label>
+
             <input
               id="firstName"
               type="text"
               name="firstName"
+
               placeholder="First name"
               value={formData.firstName}
               onChange={handleChange}
@@ -113,18 +129,22 @@ const JoinForm = () => {
               <p id="firstName-error" className="text-red-500 text-sm mt-1">
                 {errors.firstName}
               </p>
+
             )}
           </div>
 
           {/* Last Name */}
           <div>
+
             <label htmlFor="lastName" className="block font-medium mb-1 text-gray-700">
               Last Name*
             </label>
+
             <input
               id="lastName"
               type="text"
               name="lastName"
+
               placeholder="Last name"
               value={formData.lastName}
               onChange={handleChange}
@@ -136,18 +156,22 @@ const JoinForm = () => {
               <p id="lastName-error" className="text-red-500 text-sm mt-1">
                 {errors.lastName}
               </p>
+
             )}
           </div>
 
           {/* Email */}
           <div>
+
             <label htmlFor="email" className="block font-medium mb-1 text-gray-700">
               Email*
             </label>
+
             <input
               id="email"
               type="email"
               name="email"
+
               placeholder="Email"
               value={formData.email}
               onChange={handleChange}
@@ -159,18 +183,22 @@ const JoinForm = () => {
               <p id="email-error" className="text-red-500 text-sm mt-1">
                 {errors.email}
               </p>
+
             )}
           </div>
 
           {/* Tree */}
           <div>
+
             <label htmlFor="tree" className="block font-medium mb-1 text-gray-700">
               Tree (planted)*
             </label>
+
             <input
               id="tree"
               type="text"
               name="tree"
+
               placeholder="Jack"
               value={formData.tree}
               onChange={handleChange}
@@ -182,18 +210,22 @@ const JoinForm = () => {
               <p id="tree-error" className="text-red-500 text-sm mt-1">
                 {errors.tree}
               </p>
+
             )}
           </div>
 
           {/* Location */}
           <div>
+
             <label htmlFor="location" className="block font-medium mb-1 text-gray-700">
               Location*
             </label>
+
             <input
               id="location"
               type="text"
               name="location"
+
               placeholder="Colombo"
               value={formData.location}
               onChange={handleChange}
@@ -205,11 +237,14 @@ const JoinForm = () => {
               <p id="location-error" className="text-red-500 text-sm mt-1">
                 {errors.location}
               </p>
+
             )}
           </div>
 
           {/* Checkboxes */}
+
           <div className="space-y-2">
+
             <label className="flex items-center">
               <input
                 type="checkbox"
@@ -219,6 +254,7 @@ const JoinForm = () => {
                 className="mr-2 h-4 w-4 text-green-600 border-gray-300 rounded focus:ring-green-600"
                 aria-describedby={errors.acceptedTerms ? "acceptedTerms-error" : undefined}
               />
+
               <span className="text-gray-700">I have accepted the Terms & Conditions.</span>
             </label>
             {errors.acceptedTerms && (
@@ -226,6 +262,7 @@ const JoinForm = () => {
                 {errors.acceptedTerms}
               </p>
             )}
+
             <label className="flex items-center">
               <input
                 type="checkbox"
@@ -234,6 +271,7 @@ const JoinForm = () => {
                 onChange={handleChange}
                 className="mr-2 h-4 w-4 text-green-600 border-gray-300 rounded focus:ring-green-600"
               />
+
               <span className="text-gray-700">Subscribe for future updates</span>
             </label>
           </div>
@@ -253,9 +291,12 @@ const JoinForm = () => {
             {isLoading ? "Processing..." : "Next"}
           </button>
         </div>
+
       </div>
     </div>
   );
 };
 
+
 export default JoinForm;
+

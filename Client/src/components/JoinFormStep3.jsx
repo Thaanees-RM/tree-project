@@ -4,9 +4,11 @@ import { useNavigate, useLocation } from "react-router-dom";
 const JoinFormStep3 = () => {
   const navigate = useNavigate();
   const location = useLocation();
+
   const [submitted, setSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
+
 
   // Step 1 and 2 data from location.state
   const {
@@ -65,12 +67,14 @@ const JoinFormStep3 = () => {
     } catch (err) {
       console.error("Form submission failed:", err);
       setErrors({ form: err.message });
+
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleGetCertificate = () => {
+
     navigate("/certificate", {
       state: {
         name,
@@ -82,6 +86,7 @@ const JoinFormStep3 = () => {
   };
 
   // Step indicator data
+
   const steps = [
     { label: "Enter details", active: false },
     { label: "Upload Picture", active: false },
@@ -89,6 +94,7 @@ const JoinFormStep3 = () => {
   ];
 
   let content;
+
   if (errors.form) {
     content = (
       <div className="mt-2 p-2 border border-red-500 bg-white text-red-500 text-sm text-center rounded-md">
@@ -104,13 +110,16 @@ const JoinFormStep3 = () => {
           <p><span className="font-semibold">Email :</span> {email}</p>
           <p><span className="font-semibold">Tree (planted) :</span> {tree}</p>
           <p><span className="font-semibold">Location :</span> {locationText}</p>
+
         </div>
 
         {/* Uploaded Image */}
         <div className="flex flex-col items-center gap-2 mb-6">
+
           {imagePreview ? (
             <img
               src={imagePreview}
+
               alt="Uploaded preview"
               className="w-24 h-24 rounded-md object-cover"
               aria-label="Uploaded image"
@@ -126,14 +135,17 @@ const JoinFormStep3 = () => {
           <p className="text-[#01B157] font-medium">Verified</p>
         </div>
 
+
         <p className="text-sm text-gray-600 px-4 mb-6 text-center">
           <strong>Note:</strong> Your name will appear on your certificate.
         </p>
+
 
         <button
           onClick={handleSubmit}
           className={`w-full bg-[#01B157] text-white py-2 rounded-md font-semibold hover:bg-green-700 transition ${
             isLoading ? "opacity-50 cursor-not-allowed" : ""
+
           }`}
           disabled={isLoading}
         >
@@ -141,10 +153,12 @@ const JoinFormStep3 = () => {
         </button>
       </>
     );
+
   } else {
     content = (
       <div className="flex flex-col items-center justify-center text-center py-12">
         {/* Custom Checkmark Icon */}
+
         <div className="w-24 h-24 rounded-full bg-[#94e3bb] flex items-center justify-center mb-6">
           <svg
             className="w-12 h-12 text-white"
@@ -163,9 +177,11 @@ const JoinFormStep3 = () => {
         </div>
         <h2 className="text-xl font-semibold text-gray-800 mb-6">Successfully Submitted!</h2>
         <button
+
           className="w-full bg-[#01B157] text-white py-2 rounded-md font-semibold hover:bg-green-700 transition"
           onClick={handleGetCertificate}
           aria-label="Get certificate"
+
         >
           Get Certificate
         </button>
@@ -174,6 +190,7 @@ const JoinFormStep3 = () => {
   }
 
   return (
+
     <div className="bg-[#E3FFEF] py-12 px-4 min-h-screen flex flex-col items-center justify-start">
       <div className="bg-white rounded-2xl shadow-md w-full max-w-2xl p-6">
         {/* Step Indicator */}
@@ -182,6 +199,7 @@ const JoinFormStep3 = () => {
             <div
               key={index}
               className={`flex-1 text-center py-2 rounded-full font-medium text-sm sm:text-base ${
+
                 step.active ? "bg-[#94e3bb] text-white" : "bg-gray-100 text-gray-500"
               }`}
             >
@@ -189,10 +207,13 @@ const JoinFormStep3 = () => {
             </div>
           ))}
         </div>
+
         {content}
       </div>
     </div>
   );
 };
 
+
 export default JoinFormStep3;
+

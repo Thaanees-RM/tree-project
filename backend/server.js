@@ -1,8 +1,10 @@
+
 import express from 'express';
 import "dotenv/config";
 import cors from 'cors';
 import connectDB from './configs/db.js';
 import userRoutes from "./Routes/userRoutes.js";
+const authRoutes = require("./routes/authRoutes");
 
 // Initialize Express App
 const app = express();
@@ -17,10 +19,12 @@ app.use("/uploads", express.static("uploads"));
 
 // Routes
 app.use("/api/users", userRoutes);
+app.use("/api", authRoutes);
 
 app.get('/', (req, res) => res.send("Server is Running"))
 
 const  PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
+
 
 
