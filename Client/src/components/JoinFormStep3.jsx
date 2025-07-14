@@ -28,7 +28,7 @@ const JoinFormStep3 = () => {
     if (!firstName || !email || !imagePreview) {
       setErrors({ form: "Missing required data from previous steps. Please start over." });
     }
-  }, [firstName, email, imagePreview]);
+  }, [firstName, email, imagePreview]);   
 
   const handleSubmit = async () => {
     if (errors.form) return;

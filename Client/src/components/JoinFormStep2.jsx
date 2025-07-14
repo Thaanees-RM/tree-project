@@ -25,7 +25,7 @@ const JoinFormStep2 = () => {
   useEffect(() => {
     return () => {
       if (preview) {
-        URL.revokeObjectURL(preview);
+        URL.revokeObjectURL(preview);  
       }
     };
   }, [preview]);
