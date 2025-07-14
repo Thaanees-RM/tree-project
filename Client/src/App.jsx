@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Header from "./components/Header";
@@ -19,8 +20,7 @@ const App = () => {
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/join" element={<Join />} />
         <Route path="/join/upload" element={<Upload />} />
-        <Route path="/join/submit" element={<Submit />} />
-       
+        <Route path="/join/submit" element={<Submit />} />       
         <Route path="*" element={<h1 className="text-center text-2xl mt-10">404 - Page Not Found</h1>} />
       </Routes>
       <Footer />

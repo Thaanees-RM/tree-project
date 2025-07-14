@@ -5,63 +5,87 @@ const JoinFormStep3 = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [formData, setFormData] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
-  useEffect(() => {
-    if (location.state) {
-      setFormData(location.state);
-    } else {
-      const savedStep1 = JSON.parse(localStorage.getItem("joinFormData") || "{}");
-      const savedStep2 = JSON.parse(localStorage.getItem("joinFormStep2Data") || "{}");
 
-      if (savedStep1.firstName && savedStep1.email && savedStep2.imagePreview) {
-        setFormData({ ...savedStep1, ...savedStep2 });
-      } else {
-        setErrors({ form: "Missing required data from previous steps. Please start over." });
-      }
+  // Step 1 and 2 data from location.state
+  const {
+    firstName,
+    lastName,
+    email,
+    tree,
+    location: locationText,
+    acceptedTerms,
+    subscribe,
+    imageFile,
+    imagePreview,
+  } = location.state || {};
+
+  const name = `${firstName} ${lastName}`;
+
+  // Validate required data
+  useEffect(() => {
+    if (!firstName || !email || !imagePreview) {
+      setErrors({ form: "Missing required data from previous steps. Please start over." });
     }
-  }, [location.state]);
+  }, [firstName, email, imagePreview]);   
 
   const handleSubmit = async () => {
-    if (errors.form || !formData) return;
+    if (errors.form) return;
 
     setIsLoading(true);
     try {
-      const certificateData = {
-        name: `${formData.firstName} ${formData.lastName}`,
-        email: formData.email,
-        tree: formData.tree,
-        location: formData.location,
-        image: formData.imagePreview,
-      };
+      const formData = new FormData();
+      formData.append("firstName", firstName);
+      formData.append("lastName", lastName);
+      formData.append("email", email);
+      formData.append("tree", tree);
+      formData.append("location", locationText);
+      formData.append("acceptedTerms", acceptedTerms ? "true" : "false");
+      formData.append("subscribe", subscribe ? "true" : "false");
+      formData.append("image", imageFile);
 
-      localStorage.setItem("joinFormSubmissionData", JSON.stringify(certificateData));
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      const res = await fetch("http://localhost:3000/api/users", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) {
+        const errData = await res.json();
+        throw new Error(errData.error || "Submission failed");
+      }
 
       setSubmitted(true);
       setErrors({});
+
+      // Clear localStorage here AFTER successful submission
+    localStorage.removeItem("joinFormData");
+    localStorage.removeItem("joinFormStep2Data");
+
     } catch (err) {
       console.error("Form submission failed:", err);
-      setErrors({ form: "Submission failed. Please try again." });
+      setErrors({ form: err.message });
+
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleGetCertificate = () => {
-    if (!formData) return;
+
     navigate("/certificate", {
       state: {
-        name: `${formData.firstName} ${formData.lastName}`,
-        tree: formData.tree,
-        location: formData.location,
-        image: formData.imagePreview,
+        name,
+        tree,
+        location: locationText,
+        image: imagePreview,
       },
     });
   };
+
+  // Step indicator data
 
   const steps = [
     { label: "Enter details", active: false },
@@ -73,27 +97,29 @@ const JoinFormStep3 = () => {
 
   if (errors.form) {
     content = (
-      <div className="mt-2 p-3 border border-red-500 bg-white text-red-500 text-sm text-center rounded-md">
+      <div className="mt-2 p-2 border border-red-500 bg-white text-red-500 text-sm text-center rounded-md">
         {errors.form}
       </div>
     );
-  } else if (!submitted && formData) {
-    const name = `${formData.firstName} ${formData.lastName}`;
+  } else if (!submitted) {
     content = (
       <>
-        {/* Info Display */}
-        <div className="text-sm sm:text-base leading-7 text-gray-800 mb-6 space-y-1 px-2 sm:px-4">
+        {/* User Info */}
+        <div className="text-sm sm:text-base leading-7 text-gray-800 mb-6 space-y-1 px-4">
           <p><span className="font-semibold">Name :</span> {name}</p>
-          <p><span className="font-semibold">Email :</span> {formData.email}</p>
-          <p><span className="font-semibold">Tree (planted) :</span> {formData.tree}</p>
-          <p><span className="font-semibold">Location :</span> {formData.location}</p>
+          <p><span className="font-semibold">Email :</span> {email}</p>
+          <p><span className="font-semibold">Tree (planted) :</span> {tree}</p>
+          <p><span className="font-semibold">Location :</span> {locationText}</p>
+
         </div>
 
         {/* Uploaded Image */}
         <div className="flex flex-col items-center gap-2 mb-6">
-          {formData.imagePreview ? (
+
+          {imagePreview ? (
             <img
-              src={formData.imagePreview}
+              src={imagePreview}
+
               alt="Uploaded preview"
               className="w-24 h-24 rounded-md object-cover"
               aria-label="Uploaded image"
@@ -109,18 +135,17 @@ const JoinFormStep3 = () => {
           <p className="text-[#01B157] font-medium">Verified</p>
         </div>
 
-        {/* Note */}
+
         <p className="text-sm text-gray-600 px-4 mb-6 text-center">
           <strong>Note:</strong> Your name will appear on your certificate.
         </p>
 
-        {/* Submit Button */}
+
         <button
           onClick={handleSubmit}
-          className={`w-full py-3 text-sm sm:text-base rounded-md font-semibold transition ${
-            isLoading
-              ? "bg-green-300 text-white opacity-50 cursor-not-allowed"
-              : "bg-[#01B157] text-white hover:bg-green-700"
+          className={`w-full bg-[#01B157] text-white py-2 rounded-md font-semibold hover:bg-green-700 transition ${
+            isLoading ? "opacity-50 cursor-not-allowed" : ""
+
           }`}
           disabled={isLoading}
         >
@@ -128,9 +153,12 @@ const JoinFormStep3 = () => {
         </button>
       </>
     );
-  } else if (submitted) {
+
+  } else {
     content = (
       <div className="flex flex-col items-center justify-center text-center py-12">
+        {/* Custom Checkmark Icon */}
+
         <div className="w-24 h-24 rounded-full bg-[#94e3bb] flex items-center justify-center mb-6">
           <svg
             className="w-12 h-12 text-white"
@@ -149,8 +177,11 @@ const JoinFormStep3 = () => {
         </div>
         <h2 className="text-xl font-semibold text-gray-800 mb-6">Successfully Submitted!</h2>
         <button
-          className="w-full py-3 text-sm sm:text-base bg-[#01B157] text-white rounded-md font-semibold hover:bg-green-700 transition"
+
+          className="w-full bg-[#01B157] text-white py-2 rounded-md font-semibold hover:bg-green-700 transition"
           onClick={handleGetCertificate}
+          aria-label="Get certificate"
+
         >
           Get Certificate
         </button>
@@ -159,14 +190,16 @@ const JoinFormStep3 = () => {
   }
 
   return (
-    <div className="bg-green-50 py-10 px-4 sm:py-14 sm:px-6 min-h-screen flex flex-col items-center justify-start">
-      <div className="bg-white rounded-2xl shadow-md w-full max-w-2xl p-5 sm:p-8">
+
+    <div className="bg-[#E3FFEF] py-12 px-4 min-h-screen flex flex-col items-center justify-start">
+      <div className="bg-white rounded-2xl shadow-md w-full max-w-2xl p-6">
         {/* Step Indicator */}
-        <div className="flex flex-col sm:flex-row justify-between items-center gap-2 mb-8">
+        <div className="flex justify-between items-center mb-8 gap-2">
           {steps.map((step, index) => (
             <div
               key={index}
-              className={`w-full sm:w-auto text-center py-2 px-3 rounded-full font-medium text-sm sm:text-base ${
+              className={`flex-1 text-center py-2 rounded-full font-medium text-sm sm:text-base ${
+
                 step.active ? "bg-[#94e3bb] text-white" : "bg-gray-100 text-gray-500"
               }`}
             >
@@ -181,4 +214,6 @@ const JoinFormStep3 = () => {
   );
 };
 
+
 export default JoinFormStep3;
+
