@@ -10,12 +10,15 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
+  
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    
     if (formData.name.length < 3) {
       setError("Name must be at least 3 characters long");
       return;
@@ -30,8 +33,9 @@ const Login = () => {
     setSuccess("");
 
     try {
+      const apiUrl = import.meta.env.VITE_API_URL;
       const response = await axios.post(
-        process.env.REACT_APP_API_URL + "/login",
+        `${apiUrl}/login`,
         formData
       );
       const { message, token } = response.data;

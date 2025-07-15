@@ -13,7 +13,8 @@ export const createSubmission = async (req, res) => {
       subscribe
     } = req.body;
 
-    const imagePath = req.file?.path;
+    //const filename = req.file?.filename;
+    const imagePath = req.file ? `/uploads/${req.file.filename}` : "";
 
     const submission = new User({
       firstName,
@@ -26,7 +27,7 @@ export const createSubmission = async (req, res) => {
       imagePath
     });
 
-    await submission.save();
+    await submission.save(); 
 
     res.status(201).json({
       message: "Submission successful",
@@ -105,5 +106,22 @@ export const getSubmissionById = async (req, res) => {
   } catch (error) {
     console.error("Error getting submission:", error);
     res.status(500).json({ error: "Failed to get submission" });
+  }
+};
+
+// PUT /api/submissions/:id/pending → pending a submission
+export const markPending = async (req, res) => {
+  try {
+    const submission = await User.findByIdAndUpdate(
+      req.params.id,
+      { status: "Pending" },
+      { new: true }
+    );
+    if (!submission) {
+      return res.status(404).json({ error: "Submission not found" });
+    }
+    res.json(submission);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to mark submission as pending" });
   }
 };

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
 
 const JoinFormStep3 = () => {
   const navigate = useNavigate();
@@ -47,15 +48,17 @@ const JoinFormStep3 = () => {
       formData.append("subscribe", subscribe ? "true" : "false");
       formData.append("image", imageFile);
 
-      const res = await fetch("http://localhost:3000/api/users", {
-        method: "POST",
-        body: formData,
-      });
+      //  const res = await fetch("http://localhost:3000/api/users", {
+      //    method: "POST",
+      //    body: formData,
+      // });
 
-      if (!res.ok) {
-        const errData = await res.json();
-        throw new Error(errData.error || "Submission failed");
-      }
+      const res = await axios.post("http://localhost:3000/api/users", formData);
+
+      //  if (!res.ok) {
+      //    const errData = await res.json();
+      //    throw new Error(errData.error || "Submission failed");
+      //  }
 
       setSubmitted(true);
       setErrors({});
@@ -66,7 +69,7 @@ const JoinFormStep3 = () => {
 
     } catch (err) {
       console.error("Form submission failed:", err);
-      setErrors({ form: err.message });
+      setErrors({ form: err.response?.data?.error || err.message  });
 
     } finally {
       setIsLoading(false);
@@ -82,7 +85,7 @@ const JoinFormStep3 = () => {
         location: locationText,
         image: imagePreview,
       },
-    });
+    }); 
   };
 
   // Step indicator data

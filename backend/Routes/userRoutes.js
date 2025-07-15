@@ -6,10 +6,11 @@ import {
   getSubmissionsByStatus,
   approveSubmission,
   rejectSubmission,
-  getSubmissionById
+  getSubmissionById,
+  markPending
 } from "../controllers/userController.js";
 
-const router = express.Router();
+const router = express.Router(); 
 
 // Form submission with image
 router.post("/", upload.single("image"), createSubmission);
@@ -23,6 +24,7 @@ router.get("/status/:status", getSubmissionsByStatus);
 // Approve or Reject
 router.put("/:id/approve", approveSubmission);
 router.put("/:id/reject", rejectSubmission);
+router.put("/:id/pending", markPending);
 
 // Optional: Get one
 router.get("/:id", getSubmissionById);
