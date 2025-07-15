@@ -1,5 +1,7 @@
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import {
   FaFacebookF,
   FaYoutube,
@@ -11,6 +13,7 @@ import {
 } from 'react-icons/fa';
 
 const Footer = () => {
+
   const navigate = useNavigate();
 
   const handleHowToJoinScroll = () => {
@@ -143,5 +146,6 @@ const Footer = () => {
     </footer>
   );
 };
+
 
 export default Footer;

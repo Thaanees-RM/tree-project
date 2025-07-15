@@ -1,20 +1,30 @@
-const express = require("express");
-const cors = require("cors");
-const dotenv = require("dotenv");
+
+import express from 'express';
+import "dotenv/config";
+import cors from 'cors';
+import connectDB from './configs/db.js';
+import userRoutes from "./Routes/userRoutes.js";
 const authRoutes = require("./routes/authRoutes");
 
-dotenv.config();
+// Initialize Express App
 const app = express();
 
-// Middleware
+// Connect to MongoDB
+await connectDB()
+
+//Middleware
 app.use(cors());
 app.use(express.json());
+app.use("/uploads", express.static("uploads"));
 
 // Routes
+app.use("/api/users", userRoutes);
 app.use("/api", authRoutes);
 
-// Start server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-});
+app.get('/', (req, res) => res.send("Server is Running"))
+
+const  PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
+
+
+
