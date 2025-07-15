@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -6,6 +7,7 @@ import axios from "axios";
 const Dashboard = () => {
 
   const [data, setData] = useState([]);
+
   const [statusFilter, setStatusFilter] = useState("All");
   const [modalImage, setModalImage] = useState(null);
   const [selectedEntry, setSelectedEntry] = useState(null);
@@ -46,6 +48,7 @@ const Dashboard = () => {
 
       await axios.put(`${import.meta.env.VITE_API_URL}/users/${id}/${route}`);
 
+
       setData(prev =>
         prev.map(item => (item._id === id ? { ...item, status: newStatus } : item))
       );
@@ -55,6 +58,7 @@ const Dashboard = () => {
     }
   };
   
+
   return (
     <div className="flex min-h-screen">
       {/* Sidebar */}
@@ -63,10 +67,14 @@ const Dashboard = () => {
           <div className="text-2xl font-bold mb-12">Logo</div>
           <nav className="space-y-2">
             <button className="flex items-center gap-2 px-4 py-2 bg-white text-black rounded-md">
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M3 13h14v-2H3v2zM3 9h14V7H3v2z"/></svg>
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M3 13h14v-2H3v2zM3 9h14V7H3v2z" />
+              </svg>
               Overview
             </button>
-            <button className="text-sm px-4 py-2 hover:bg-gray-800 rounded-md">Settings</button>
+            <button className="text-sm px-4 py-2 hover:bg-gray-800 rounded-md">
+              Settings
+            </button>
           </nav>
         </div>
         <div className="flex items-center gap-3 text-sm">
@@ -90,11 +98,13 @@ const Dashboard = () => {
         
 
         <div className="grid grid-cols-3 gap-6 mb-8">
+
           {/* Total Submissions */}
           <div
             className={`p-6 rounded-lg shadow cursor-pointer ${
               statusFilter === "All"
                 ? "bg-gradient-to-r from-cyan-400 to-blue-500 text-white"
+
                 : "bg-white text-black hover:bg-gray-50"
             }`}
             onClick={() => setStatusFilter("All")}
@@ -103,11 +113,13 @@ const Dashboard = () => {
             <h3 className="text-3xl font-bold">{total}</h3>
           </div>
 
+
           {/* Pending Submissions */}
           <div
             className={`p-6 rounded-lg shadow cursor-pointer ${
               statusFilter === "Pending"
                 ? "bg-gradient-to-r from-cyan-400 to-blue-500 text-white"
+
                 : "bg-white text-black hover:bg-gray-50"
             }`}
             onClick={() => setStatusFilter("Pending")}
@@ -116,16 +128,20 @@ const Dashboard = () => {
             <h3 className="text-3xl font-bold">{pending}</h3>
           </div>
 
+
           {/* Approved/Rejected Submissions */}
           <div
             className={`p-6 rounded-lg shadow cursor-pointer ${
               statusFilter === "Verified"
                 ? "bg-gradient-to-r from-cyan-400 to-blue-500 text-white"
+
                 : "bg-white text-black hover:bg-gray-50"
             }`}
             onClick={() => setStatusFilter("Verified")}
           >
+
             <p className="text-sm">Verified Submissions</p>
+
             <h3 className="text-3xl font-bold">{approvedRejected}</h3>
           </div>
         </div>
@@ -187,6 +203,7 @@ const Dashboard = () => {
                               ? "bg-red-100 text-red-600"
                               : "bg-yellow-100 text-yellow-700"
                           }`}
+
                       >
                         {entry.status}
                       </span>
@@ -208,19 +225,42 @@ const Dashboard = () => {
         {/* Modal */}
         {/* {modalImage && (
           <div
+            role="button"
+            tabIndex={0}
             className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+            aria-label="Close modal"
             onClick={() => setModalImage(null)}
+            onKeyDown={(e) => {
+              if (e.key === "Escape" || e.key === "Enter" || e.key === " ") {
+                setModalImage(null);
+              }
+            }}
+            style={{ cursor: "pointer", display: "flex" }}
           >
-            <div
+            <dialog
+              open
               className="bg-white rounded-lg p-4 max-w-2xl shadow-lg relative"
+              style={{ padding: 0, border: "none", maxWidth: "32rem" }}
               onClick={(e) => e.stopPropagation()}
             >
               <button
                 className="absolute top-2 right-2 text-gray-600 hover:text-black"
                 onClick={() => setModalImage(null)}
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (
+                    e.key === "Escape" ||
+                    e.key === "Enter" ||
+                    e.key === " "
+                  ) {
+                    setModalImage(null);
+                  }
+                }}
+                aria-label="Close image preview"
               >
                 ✕
               </button>
+
               <img src={`${import.meta.env.VITE_API_URL}${modalImage}`} 
               alt="Preview" 
               className="w-full h-auto rounded-md" />
@@ -253,6 +293,7 @@ const Dashboard = () => {
                 Uploaded by: {selectedEntry.firstName} {selectedEntry.lastName}
               </p>
             </div>
+
           </div>
         )}
 
