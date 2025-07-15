@@ -116,7 +116,7 @@ const JoinFormStep2 = () => {
     try {
 
       // Persist data to localStorage
-      const step2Data = { ...userDetails, imageFile: file.name, imagePreview: preview };
+      const step2Data = { ...userDetails, imageFile: file, imagePreview: preview };
       localStorage.setItem("joinFormStep2Data", JSON.stringify(step2Data));
 
       // Simulate async operation (replace with API call if needed)
