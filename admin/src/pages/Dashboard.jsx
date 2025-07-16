@@ -284,8 +284,7 @@ const Dashboard = () => {
                 ✕
               </button>
               <img
-                src= {`${import.meta.env.VITE_API_URL}${selectedEntry.imagePath}`}
-                 
+                src= {selectedEntry.imagePath}
                 alt="Preview"
                 className="w-full h-auto rounded-md"
               />

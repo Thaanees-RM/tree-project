@@ -306,9 +306,11 @@ const Home = () => {
             <p className='text-base md:text-2xl font-medium text-white' data-aos="fade-up" data-aos-delay="600">
               Our planet needs more than promises — it needs action. With over 1 million trees already in the ground, your next step could be the one that sparks a ripple of change for generations to come.
             </p>
-            <button className='text-base font-normal text-white bg-[#01B157] w-full md:w-100 py-3 rounded-sm text-center shadow-[0px_1px_8.5px_0px_#5BE4A84F] hover:bg-[#01B157B2]' data-aos="fade-up" data-aos-delay="800">
-              Be a Member
-            </button>
+            <a href="/join">
+              <button className='text-base font-normal text-white bg-[#01B157] w-full md:w-100 py-3 rounded-sm text-center shadow-[0px_1px_8.5px_0px_#5BE4A84F] hover:bg-[#01B157B2] cursor-pointer' data-aos="fade-up" data-aos-delay="800">
+                Be a Member
+              </button>
+            </a>
           </div>
           {/* Right section */}
           <div className='hidden md:flex' data-aos="fade-up" data-aos-delay="400">

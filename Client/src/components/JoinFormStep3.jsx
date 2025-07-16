@@ -152,7 +152,7 @@ const JoinFormStep3 = () => {
           }`}
           disabled={isLoading}
         >
-          {isLoading ? "Submitting..." : "Submit"}
+          {isLoading ? "Submitting..." : "Submit for Review"}
         </button>
       </>
     );
@@ -186,7 +186,7 @@ const JoinFormStep3 = () => {
           aria-label="Get certificate"
 
         >
-          Get Certificate
+          Done
         </button>
       </div>
     );
