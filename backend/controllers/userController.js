@@ -1,3 +1,5 @@
+import cloudinary from "../configs/cloudinary.js";
+import streamifier from "streamifier";
 import User from '../models/user.js';
 
 // POST /api/submissions → create a new submission
@@ -13,8 +15,34 @@ export const createSubmission = async (req, res) => {
       subscribe
     } = req.body;
 
-    //const filename = req.file?.filename;
-    const imagePath = req.file ? `/uploads/${req.file.filename}` : "";
+    let imagePath = "";
+
+    // If file is uploaded, send it to Cloudinary
+    if (req.file) {
+      const streamUpload = () => {
+        return new Promise((resolve, reject) => {
+          const stream = cloudinary.uploader.upload_stream(
+            {
+              folder: "tree-uploads"
+            },
+            (error, result) => {
+              if (result) {
+                resolve(result);
+              } else {
+                reject(error);
+              }
+            }
+          );
+          streamifier.createReadStream(req.file.buffer).pipe(stream);
+        });
+      };
+
+      const result = await streamUpload();
+      imagePath = result.secure_url;
+    }
+
+    // //const filename = req.file?.filename;
+    // const imagePath = req.file ? `/uploads/${req.file.filename}` : "";
 
     const submission = new User({
       firstName,
