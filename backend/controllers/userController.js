@@ -1,6 +1,11 @@
 import cloudinary from "../configs/cloudinary.js";
 import streamifier from "streamifier";
 import User from '../models/user.js';
+import fs from 'fs/promises'; // for reading certificate file
+import path from 'path';
+import { fileURLToPath } from 'url';
+import sendCertificateEmail from '../utils/sendCertificateEmail.js';
+import { generateNamedCertificate } from '../utils/certificateGenerator.js';
 
 // POST /api/submissions → create a new submission
 export const createSubmission = async (req, res) => {
@@ -90,22 +95,41 @@ export const getSubmissionsByStatus = async (req, res) => {
   }
 };
 
-// PUT /api/submissions/:id/approve → approve a submission
-export const approveSubmission = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const updated = await User.findByIdAndUpdate(
-      id,
-      { status: "Approved" },
-      { new: true }
-    );
-    if (!updated) return res.status(404).json({ error: "Submission not found" });
-    res.status(200).json({ message: "Submission approved", data: updated });
-  } catch (error) {
-    console.error("Error approving submission:", error);
-    res.status(500).json({ error: "Failed to approve submission" });
-  }
+//const __filename = fileURLToPath(import.meta.url);
+//const __dirname = path.dirname(__filename);
+
+ //PUT /api/submissions/:id/approve → approve a submission
+ export const approveSubmission = async (req, res) => {
+   try {
+     const { id } = req.params;
+     const updated = await User.findByIdAndUpdate(
+       id,
+       { status: "Approved" },
+       { new: true }
+     );
+     if (!updated) return res.status(404).json({ error: "Submission not found" });
+
+     // Read certificate PDF file (you can replace this with dynamic PDF generation)
+    // const certPath = path.join(__dirname, '../public/certificates/certificate.pdf');
+    // const pdfBuffer = await fs.readFile(certPath);
+
+    // // Send certificate email
+    // await sendCertificateEmail(updated.email, pdfBuffer);
+
+    const fullName = `${updated.firstName} ${updated.lastName}`;
+    const pdfBuffer = await generateNamedCertificate(fullName);
+
+    //const pdfBuffer = await generateNamedCertificate(updated.firstName);
+    await sendCertificateEmail(updated.email, pdfBuffer);
+
+     res.status(200).json({ message: "Submission approved", data: updated });
+   } catch (error) {
+     console.error("Error approving submission:", error);
+     res.status(500).json({ error: "Failed to approve submission" });
+   }
 };
+
+
 
 // PUT /api/submissions/:id/reject → reject a submission
 export const rejectSubmission = async (req, res) => {
