@@ -223,50 +223,6 @@ const Dashboard = () => {
         </div>
 
         {/* Modal */}
-        {/* {modalImage && (
-          <div
-            role="button"
-            tabIndex={0}
-            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-            aria-label="Close modal"
-            onClick={() => setModalImage(null)}
-            onKeyDown={(e) => {
-              if (e.key === "Escape" || e.key === "Enter" || e.key === " ") {
-                setModalImage(null);
-              }
-            }}
-            style={{ cursor: "pointer", display: "flex" }}
-          >
-            <dialog
-              open
-              className="bg-white rounded-lg p-4 max-w-2xl shadow-lg relative"
-              style={{ padding: 0, border: "none", maxWidth: "32rem" }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button
-                className="absolute top-2 right-2 text-gray-600 hover:text-black"
-                onClick={() => setModalImage(null)}
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (
-                    e.key === "Escape" ||
-                    e.key === "Enter" ||
-                    e.key === " "
-                  ) {
-                    setModalImage(null);
-                  }
-                }}
-                aria-label="Close image preview"
-              >
-                ✕
-              </button>
-
-              <img src={`${import.meta.env.VITE_API_URL}${modalImage}`} 
-              alt="Preview" 
-              className="w-full h-auto rounded-md" />
-            </div>
-          </div>
-        )} */}
         {selectedEntry && (
           
           <div
