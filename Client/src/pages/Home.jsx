@@ -125,7 +125,7 @@ const Home = () => {
             </p>
             <div data-aos='fade-in' data-aos-delay='2000' className='flex flex-col gap-4 mt-8 items-center justify-center'>
               <Link to="/join">
-                <button className='flex flex-row items-center justify-center gap-2 text-base font-medium text-white bg-[#006A34] rounded-sm py-3 w-60 group cursor-pointer'>
+                <button className='flex flex-row items-center justify-center gap-2 text-base font-medium text-white bg-[#006A34] rounded-sm py-3 w-90 group cursor-pointer'>
                   <p className='translate-x-2 transition-all duration-300 group-hover:-translate-x-1'>
                     Be a Member
                   </p>
@@ -133,7 +133,7 @@ const Home = () => {
                 </button>
               </Link>
               <Link to="#join-section">
-                <button className='flex flex-row items-center justify-center gap-2 text-base font-medium text-[#006A34] bg-none border-[1px] border-[#006A34] rounded-sm py-3 w-60 group cursor-pointer'>
+                <button className='flex flex-row items-center justify-center gap-2 text-base font-medium text-[#006A34] bg-none border-[1px] border-[#006A34] rounded-sm py-3 w-90 group cursor-pointer'>
                   <p className='translate-x-2 transition-all duration-300 group-hover:-translate-x-1'>
                     How to Join
                   </p>
@@ -307,7 +307,7 @@ const Home = () => {
               Our planet needs more than promises — it needs action. With over 1 million trees already in the ground, your next step could be the one that sparks a ripple of change for generations to come.
             </p>
             <a href="/join">
-              <button className='text-base font-normal text-white bg-[#01B157] w-full md:w-100 py-3 rounded-sm text-center shadow-[0px_1px_8.5px_0px_#5BE4A84F] hover:bg-[#01B157B2] cursor-pointer' data-aos="fade-up" data-aos-delay="800">
+              <button className='text-base font-normal text-white bg-[#01B157] w-50 md:w-100 py-3 rounded-sm text-center shadow-[0px_1px_8.5px_0px_#5BE4A84F] hover:bg-[#01B157B2] cursor-pointer' data-aos="fade-up" data-aos-delay="800">
                 Be a Member
               </button>
             </a>
@@ -317,9 +317,6 @@ const Home = () => {
             <img src="/assets/HomeEnd.jpg" alt="" className='rounded-xl object-cover w-450 h-100'/>
           </div>
         </div>
-
-
-
       </div>
     </>
   )

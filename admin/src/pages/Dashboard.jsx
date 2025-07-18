@@ -242,7 +242,7 @@ const Dashboard = () => {
               <img
                 src= {selectedEntry.imagePath}
                 alt="Preview"
-                className="w-full h-auto rounded-md"
+                className="w-100 h-100 object-cover rounded-md"
               />
               <p className="mt-2 text-sm text-gray-700">
                 Uploaded by: {selectedEntry.firstName} {selectedEntry.lastName}

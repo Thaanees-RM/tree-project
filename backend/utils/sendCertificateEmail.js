@@ -10,13 +10,16 @@ export async function sendCertificateEmail(toEmail, pdfBuffer) {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS, // App password
+        //user: process.env.EMAIL_USER,
+        user: 'fayazahamed7333@gmail.com',
+        //pass: process.env.EMAIL_PASS, // App password
+        pass: 'sujbcmcdbqionngp', // App password
       },
     });
 
     const mailOptions = {
-      from: `"Tree Plantation" <${process.env.EMAIL_USER}>`,
+      //from: `"Tree Plantation" <${process.env.EMAIL_USER}>`,
+      from: `"Tree Plantation" <fayazahamed7333@gmail.com>`,
       to: toEmail,
       subject: 'Your Tree Plantation Certificate',
       text: 'Thank you for participating! Please find your certificate attached.',
