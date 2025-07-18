@@ -1,10 +1,10 @@
 import cloudinary from "../configs/cloudinary.js";
 import streamifier from "streamifier";
 import User from '../models/user.js';
-import fs from 'fs/promises'; // for reading certificate file
-import path from 'path';
-import { fileURLToPath } from 'url';
-import sendCertificateEmail from '../utils/sendCertificateEmail.js';
+// import fs from 'fs/promises'; // for reading certificate file
+// import path from 'path';
+// import { fileURLToPath } from 'url';
+// import sendCertificateEmail from '../utils/sendCertificateEmail.js';
 import { generateNamedCertificate } from '../utils/certificateGenerator.js';
 
 // POST /api/submissions → create a new submission
@@ -107,11 +107,14 @@ export const getSubmissionsByStatus = async (req, res) => {
      );
      if (!updated) return res.status(404).json({ error: "Submission not found" });
 
-    const fullName = `${updated.firstName} ${updated.lastName}`;
-    const pdfBuffer = await generateNamedCertificate(fullName);
+    //const fullName = `${updated.firstName} ${updated.lastName}`;
+    //const pdfBuffer = await generateNamedCertificate(fullName);
 
     //const pdfBuffer = await generateNamedCertificate(updated.firstName);
-    await sendCertificateEmail(updated.email, pdfBuffer);
+    //await sendCertificateEmail(updated.email, pdfBuffer);
+
+    const fullName = `${updated.firstName} ${updated.lastName}`;
+    const certFileName = await generateNamedCertificate(fullName, updated._id);
 
      res.status(200).json({ message: "Submission approved", data: updated });
    } catch (error) {

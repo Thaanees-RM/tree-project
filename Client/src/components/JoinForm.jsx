@@ -45,24 +45,61 @@ const JoinForm = () => {
 
   // Validate form
 
+  // const validateForm = () => {
+  //   const newErrors = {};
+  //   if (!formData.firstName.trim()) newErrors.firstName = "First name is required.";
+  //   else if (formData.firstName.length < 2) newErrors.firstName = "First name must be at least 2 characters.";
+
+  //   if (!formData.lastName.trim()) newErrors.lastName = "Last name is required.";
+  //   else if (formData.lastName.length < 2) newErrors.lastName = "Last name must be at least 2 characters.";
+
+  //   if (!formData.email.trim()) newErrors.email = "Email is required.";
+  //   else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = "Invalid email format.";
+
+  //   if (!formData.tree.trim()) newErrors.tree = "Tree name is required.";
+  //   if (!formData.location.trim()) newErrors.location = "Location is required.";
+  //   if (!formData.acceptedTerms) newErrors.acceptedTerms = "You must accept the Terms & Conditions.";
+
+  //   setErrors(newErrors);
+  //   return Object.keys(newErrors).length === 0;
+  // };
+
   const validateForm = () => {
-    const newErrors = {};
-    if (!formData.firstName.trim()) newErrors.firstName = "First name is required.";
-    else if (formData.firstName.length < 2) newErrors.firstName = "First name must be at least 2 characters.";
+  const newErrors = {};
 
-    if (!formData.lastName.trim()) newErrors.lastName = "Last name is required.";
-    else if (formData.lastName.length < 2) newErrors.lastName = "Last name must be at least 2 characters.";
+  // First Name
+  if (!formData.firstName.trim()) newErrors.firstName = "First name is required.";
+  else if (formData.firstName.length < 2) newErrors.firstName = "First name must be at least 2 characters.";
+  else if (formData.firstName.length > 30) newErrors.firstName = "First name must be less than 30 characters.";
+  else if (!/^[A-Za-z\s]+$/.test(formData.firstName)) newErrors.firstName = "First name must contain only letters.";
 
-    if (!formData.email.trim()) newErrors.email = "Email is required.";
-    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = "Invalid email format.";
+  // Last Name
+  if (!formData.lastName.trim()) newErrors.lastName = "Last name is required.";
+  else if (formData.lastName.length < 2) newErrors.lastName = "Last name must be at least 2 characters.";
+  else if (formData.lastName.length > 30) newErrors.lastName = "Last name must be less than 30 characters.";
+  else if (!/^[A-Za-z\s]+$/.test(formData.lastName)) newErrors.lastName = "Last name must contain only letters.";
 
-    if (!formData.tree.trim()) newErrors.tree = "Tree name is required.";
-    if (!formData.location.trim()) newErrors.location = "Location is required.";
-    if (!formData.acceptedTerms) newErrors.acceptedTerms = "You must accept the Terms & Conditions.";
+  // Email
+  if (!formData.email.trim()) newErrors.email = "Email is required.";
+  else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = "Invalid email format.";
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+  // Tree
+  if (!formData.tree.trim()) newErrors.tree = "Tree name is required.";
+  else if (formData.tree.length < 2) newErrors.tree = "Tree name must be at least 2 characters.";
+  else if (formData.tree.length > 20) newErrors.tree = "Tree name must be less than 20 characters.";
+
+  // Location
+  if (!formData.location.trim()) newErrors.location = "Location is required.";
+  else if (formData.location.length < 2) newErrors.location = "Location must be at least 2 characters.";
+  else if (formData.location.length > 30) newErrors.location = "Location must be less than 30 characters.";
+
+  // Terms
+  if (!formData.acceptedTerms) newErrors.acceptedTerms = "You must accept the Terms & Conditions.";
+
+  setErrors(newErrors);
+  return Object.keys(newErrors).length === 0;
+};
+
 
 
   // Handle form submission

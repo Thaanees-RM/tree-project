@@ -1,6 +1,8 @@
 
 import { useEffect, useState } from "react";
 import axios from "axios";
+import emailjs from '@emailjs/browser';
+
 
 
 
@@ -38,16 +40,58 @@ const Dashboard = () => {
             : d.status === statusFilter
         );
   
+  // const handleStatusChange = async (id, newStatus) => {
+  //   try {
+  //     let route;
+  //     if (newStatus === "Approved") route = "approve";
+  //     else if (newStatus === "Rejected") route = "reject";
+  //     else if (newStatus === "Pending") route = "pending";
+  //     else return; // invalid status
+
+  //     await axios.put(`${import.meta.env.VITE_API_URL}/users/${id}/${route}`);
+
+
+  //     setData(prev =>
+  //       prev.map(item => (item._id === id ? { ...item, status: newStatus } : item))
+  //     );
+  //   } catch (error) {
+  //     console.error("Failed to update status", error);
+  //     alert("Status update failed");
+  //   }
+  // };
+
   const handleStatusChange = async (id, newStatus) => {
     try {
       let route;
       if (newStatus === "Approved") route = "approve";
       else if (newStatus === "Rejected") route = "reject";
       else if (newStatus === "Pending") route = "pending";
-      else return; // invalid status
+      else return;
 
       await axios.put(`${import.meta.env.VITE_API_URL}/users/${id}/${route}`);
 
+      // Find the approved user details
+      const approvedUser = data.find((item) => item._id === id);
+
+      // Trigger EmailJS only on approval
+      if (newStatus === "Approved") {
+        emailjs.send(
+          'service_oqtrltd',
+          'template_qbh5fp6',
+          {
+            to_name: `${approvedUser.firstName} ${approvedUser.lastName}`,
+            to_email: approvedUser.email,
+            message: "Thank you for participating in the Tree Plantation program. Please find your certificate attached or via link.",
+            //certificate_link: `${window.location.origin}/certificates/${approvedUser._id}.pdf` 
+            //certificate_link: `${window.location.origin}/certificates/Certificate_${approvedUser._id}.pdf`
+            certificate_link: `${import.meta.env.VITE_API_URL}/certificates/Certificate_${approvedUser._id}.pdf`,
+            
+          },
+          'KI-n_u7uxFRxMyzRx'
+        )
+        .then((res) => console.log("Email sent!", res.text))
+        .catch((err) => console.error("EmailJS error:", err));
+      }
 
       setData(prev =>
         prev.map(item => (item._id === id ? { ...item, status: newStatus } : item))
