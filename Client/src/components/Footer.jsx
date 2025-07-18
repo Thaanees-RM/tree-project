@@ -62,14 +62,36 @@ const Footer = () => {
         </div>
 
         {/* Right section */}
-        <div className='flex flex-col md:flex-row items-start gap-10 md:gap-26 pr-20 pt-10 md:pt-0'>
+        <div className='flex flex-col md:flex-row items-start gap-10 md:gap-20 pr-20 pt-10 md:pt-0'>
+          {/* Legal and Terms */}
+          <div>
+            <h2 className='text-2xl text-white font-bold mb-6'>Legal & Terms</h2>
+            <nav className='flex flex-col gap-6'>
+              <button
+                type="button"
+                onClick={() => navigate('/privacy-policy')}
+                className='font-normal text-base text-white cursor-pointer bg-transparent border-none p-0 text-left'
+                style={{ background: 'none', border: 'none' }}
+              >
+                Privacy Policy
+              </button>
+              <button
+                type="button"
+                onClick={() => navigate('/privacy-policy')}
+                className='font-normal text-base text-white cursor-pointer bg-transparent border-none p-0 text-left'
+                style={{ background: 'none', border: 'none' }}
+              >
+                Terms of Service
+              </button>
+            </nav>
+          </div>
           {/* Quick Links */}
           <div>
             <h2 className='text-2xl text-white font-bold mb-6'>Quick Links</h2>
             <nav className='flex flex-col gap-6'>
               <button
                 type="button"
-                onClick={() => navigate('/home')}
+                onClick={() => navigate('/')}
                 className='font-normal text-base text-white cursor-pointer bg-transparent border-none p-0 text-left'
                 style={{ background: 'none', border: 'none' }}
               >
@@ -77,7 +99,7 @@ const Footer = () => {
               </button>
               <button
                 type="button"
-                onClick={() => navigate('/home')}
+                onClick={() => navigate('/')}
                 className='font-normal text-base text-white cursor-pointer bg-transparent border-none p-0 text-left'
                 style={{ background: 'none', border: 'none' }}
               >
@@ -85,7 +107,7 @@ const Footer = () => {
               </button>
               <button
                 type="button"
-                onClick={handleHowToJoinScroll}
+                onClick={() => navigate('/')}
                 className='font-normal text-base text-white cursor-pointer bg-transparent border-none p-0 text-left'
                 style={{ background: 'none', border: 'none' }}
               >
@@ -125,22 +147,9 @@ const Footer = () => {
       <div className='flex flex-col md:flex-row justify-between items-center text-white text-base font-normal gap-2'>
         <p>Copyright &copy; 2025. All rights reserved.</p>
         <div className='flex flex-row items-center gap-6'>
-          <button
-            type="button"
-            onClick={() => navigate('/privacy-policy')}
-            className='cursor-pointer bg-transparent border-none text-white text-base font-normal p-0 underline'
-            style={{ background: 'none', border: 'none' }}
-          >
-            Privacy Policy
-          </button>
-          <button
-            type="button"
-            onClick={() => navigate('/terms')}
-            className='cursor-pointer bg-transparent border-none text-white text-base font-normal p-0 underline'
-            style={{ background: 'none', border: 'none' }}
-          >
-            Terms of Service
-          </button>
+          <p>
+            Designed and Developed by <a href="https://uvexzon.com/"><strong>Uvexzon</strong></a>
+          </p>
         </div>
       </div>
     </footer>

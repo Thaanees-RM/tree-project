@@ -46,8 +46,7 @@ export const createSubmission = async (req, res) => {
       imagePath = result.secure_url;
     }
 
-    // //const filename = req.file?.filename;
-    // const imagePath = req.file ? `/uploads/${req.file.filename}` : "";
+  
 
     const submission = new User({
       firstName,
@@ -95,8 +94,7 @@ export const getSubmissionsByStatus = async (req, res) => {
   }
 };
 
-//const __filename = fileURLToPath(import.meta.url);
-//const __dirname = path.dirname(__filename);
+
 
  //PUT /api/submissions/:id/approve → approve a submission
  export const approveSubmission = async (req, res) => {
@@ -108,13 +106,6 @@ export const getSubmissionsByStatus = async (req, res) => {
        { new: true }
      );
      if (!updated) return res.status(404).json({ error: "Submission not found" });
-
-     // Read certificate PDF file (you can replace this with dynamic PDF generation)
-    // const certPath = path.join(__dirname, '../public/certificates/certificate.pdf');
-    // const pdfBuffer = await fs.readFile(certPath);
-
-    // // Send certificate email
-    // await sendCertificateEmail(updated.email, pdfBuffer);
 
     const fullName = `${updated.firstName} ${updated.lastName}`;
     const pdfBuffer = await generateNamedCertificate(fullName);
