@@ -1,11 +1,11 @@
 import cloudinary from "../configs/cloudinary.js";
 import streamifier from "streamifier";
 import User from '../models/user.js';
-import fs from 'fs/promises'; // for reading certificate file
-import path from 'path';
-import { fileURLToPath } from 'url';
-import sendCertificateEmail from '../utils/sendCertificateEmail.js';
-import { generateNamedCertificate } from '../utils/certificateGenerator.js';
+// import fs from 'fs/promises'; // for reading certificate file
+// import path from 'path';
+// import { fileURLToPath } from 'url';
+// import sendCertificateEmail from '../utils/sendCertificateEmail.js';
+import  {generateAndUploadCertificate}  from '../utils/certificateGenerator.js';
 
 // POST /api/submissions → create a new submission
 export const createSubmission = async (req, res) => {
@@ -107,13 +107,20 @@ export const getSubmissionsByStatus = async (req, res) => {
      );
      if (!updated) return res.status(404).json({ error: "Submission not found" });
 
-    const fullName = `${updated.firstName} ${updated.lastName}`;
-    const pdfBuffer = await generateNamedCertificate(fullName);
+    //const fullName = `${updated.firstName} ${updated.lastName}`;
+    //const pdfBuffer = await generateNamedCertificate(fullName);
 
     //const pdfBuffer = await generateNamedCertificate(updated.firstName);
-    await sendCertificateEmail(updated.email, pdfBuffer);
+    //await sendCertificateEmail(updated.email, pdfBuffer);
 
-     res.status(200).json({ message: "Submission approved", data: updated });
+    const fullName = `${updated.firstName} ${updated.lastName}`;
+    const certificateUrl = await generateAndUploadCertificate(fullName, updated._id);
+
+    // Store the certificate URL in DB (optional)
+    updated.certificateUrl = certificateUrl;
+    await updated.save();
+
+     res.status(200).json({ message: "Submission approved", data: updated, certificateUrl });
    } catch (error) {
      console.error("Error approving submission:", error);
      res.status(500).json({ error: "Failed to approve submission" });

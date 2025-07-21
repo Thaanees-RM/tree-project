@@ -13,7 +13,7 @@ export async function sendCertificateEmail(toEmail, pdfBuffer) {
         //user: process.env.EMAIL_USER,
         user: 'fayazahamed7333@gmail.com',
         //pass: process.env.EMAIL_PASS, // App password
-        pass: 'sujbcmcdbqionngp', // App password
+        //pass: 'sujbcmcdbqionngp', // App password
       },
     });
 

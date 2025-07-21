@@ -14,6 +14,7 @@ const userSchema = new mongoose.Schema({
     enum: ['Pending', 'Approved', 'Rejected'],
     default: 'Pending'
   },
+  certificateUrl: { type: String }, // URL of the generated certificate (Cloudinary link)
   createdAt: {
     type: Date,
     default: Date.now
