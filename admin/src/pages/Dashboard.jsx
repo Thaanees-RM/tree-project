@@ -68,10 +68,16 @@ const Dashboard = () => {
       else if (newStatus === "Pending") route = "pending";
       else return;
 
-      await axios.put(`${import.meta.env.VITE_API_URL}/users/${id}/${route}`);
+      const res = await axios.put(`${import.meta.env.VITE_API_URL}/users/${id}/${route}`);
 
       // Find the approved user details
       const approvedUser = data.find((item) => item._id === id);
+
+      // Get the Cloudinary certificate URL from backend response
+      const certificateUrl = res.data.certificateUrl;
+
+      //const approvedUser = res.data.data;
+      //const certificateUrl = res.data.certificateUrl;
 
       // Trigger EmailJS only on approval
       if (newStatus === "Approved") {
@@ -84,8 +90,8 @@ const Dashboard = () => {
             message: "Thank you for participating in the Tree Plantation program. Please find your certificate attached or via link.",
             //certificate_link: `${window.location.origin}/certificates/${approvedUser._id}.pdf` 
             //certificate_link: `${window.location.origin}/certificates/Certificate_${approvedUser._id}.pdf`
-            certificate_link: `${import.meta.env.VITE_API_URL}/certificates/Certificate_${approvedUser._id}.pdf`,
-            
+            //certificate_link: `${import.meta.env.VITE_API_URL}/certificates/Certificate_${approvedUser._id}.pdf`,
+            certificate_link: certificateUrl, 
           },
           'KI-n_u7uxFRxMyzRx'
         )
@@ -104,12 +110,12 @@ const Dashboard = () => {
   
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex flex-col md:flex-row min-h-screen overflow-x-hidden">
       {/* Sidebar */}
-      <aside className="w-64 bg-black text-white flex flex-col justify-between p-6">
+      <aside className="w-full md:w-64 bg-black text-white flex md:flex-col justify-between items-start p-6">
         <div>
           <div className="text-2xl font-bold mb-12">Logo</div>
-          <nav className="space-y-2">
+          <nav className="space-y-2 ">
             <button className="flex items-center gap-2 px-4 py-2 bg-white text-black rounded-md">
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M3 13h14v-2H3v2zM3 9h14V7H3v2z" />
@@ -135,13 +141,13 @@ const Dashboard = () => {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 bg-gray-100 p-10 relative">
+      <main className="flex-1 bg-gray-100 p-4 md:p-10 relative overflow-auto">
         <h2 className="text-xl font-semibold mb-6">Dashboard</h2>
 
         {/* Stat Cards */}
         
 
-        <div className="grid grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-6">
 
           {/* Total Submissions */}
           <div
@@ -191,35 +197,35 @@ const Dashboard = () => {
         </div>
 
         {/* Table */}
-        <div className="bg-white rounded-xl shadow overflow-x-auto">
-          <table className="min-w-full text-sm text-left">
+        <div className="bg-white rounded-xl shadow overflow-x-auto max-w-full">
+          <table className="md:table-fixed w-full text-sm text-left">
             <thead className="bg-white text-gray-500 border-b">
               <tr>
-                <th className="px-6 py-4 font-medium">Name</th>
-                <th className="px-6 py-4 font-medium">Tree</th>
-                <th className="px-6 py-4 font-medium">Location</th>
-                <th className="px-6 py-4 font-medium">Image</th>
-                <th className="px-6 py-4 font-medium">Status</th>
+                <th className="px-6 py-4 font-medium md:w-[20%]">Name</th>
+                <th className="px-6 py-4 font-medium md:w-[20%]">Tree</th>
+                <th className="px-6 py-4 font-medium md:w-[20%]">Location</th>
+                <th className="px-6 py-4 font-medium md:w-[20%]">Image</th>
+                <th className="px-6 py-4 font-medium md:w-[20%]">Status</th>
               </tr>
             </thead>
             <tbody>
               {filteredData.map((entry, index) => {
 
                 
-                console.log("Modal image:", selectedEntry?.imagePath);
+                
                 return (
                 <tr key={index} className="border-t hover:bg-gray-50">
-                  <td className="px-6 py-4">{entry.firstName} {entry.lastName}</td>
-                  <td className="px-6 py-4">{entry.tree}</td>
-                  <td className="px-6 py-4">{entry.location}</td>
-                  <td className="px-6 py-4 text-blue-500 underline cursor-pointer" 
+                  <td className="px-6 py-4 md:w-[200px] break-words ">{entry.firstName} {entry.lastName}</td>
+                  <td className="px-6 py-4 md:w-[200px] break-words ">{entry.tree}</td>
+                  <td className="px-6 py-4 md:w-[150px] break-words ">{entry.location}</td>
+                  <td className="px-6 py-4 md:w-[150px] text-blue-500 underline cursor-pointer" 
                   //onClick={() => setModalImage(entry.imagePath)}
                   onClick={() => setSelectedEntry(entry)}
                   >
                     View
                   </td>
                   
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-4 md:w-[150px]">
                     {statusFilter === "All" ? (
                       <select
                         value={entry.status}

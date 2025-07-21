@@ -50,7 +50,9 @@
 
     "pdf-lib": "^1.17.1",
 
-    "streamifier": "^0.1.1"
+    "streamifier": "^0.1.1",
+
+    "tmp-promise": "^3.0.3"
 
   },
 

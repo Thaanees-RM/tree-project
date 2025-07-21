@@ -5,7 +5,7 @@ import User from '../models/user.js';
 // import path from 'path';
 // import { fileURLToPath } from 'url';
 // import sendCertificateEmail from '../utils/sendCertificateEmail.js';
-import { generateNamedCertificate } from '../utils/certificateGenerator.js';
+import  {generateAndUploadCertificate}  from '../utils/certificateGenerator.js';
 
 // POST /api/submissions → create a new submission
 export const createSubmission = async (req, res) => {
@@ -114,9 +114,13 @@ export const getSubmissionsByStatus = async (req, res) => {
     //await sendCertificateEmail(updated.email, pdfBuffer);
 
     const fullName = `${updated.firstName} ${updated.lastName}`;
-    const certFileName = await generateNamedCertificate(fullName, updated._id);
+    const certificateUrl = await generateAndUploadCertificate(fullName, updated._id);
 
-     res.status(200).json({ message: "Submission approved", data: updated });
+    // Store the certificate URL in DB (optional)
+    updated.certificateUrl = certificateUrl;
+    await updated.save();
+
+     res.status(200).json({ message: "Submission approved", data: updated, certificateUrl });
    } catch (error) {
      console.error("Error approving submission:", error);
      res.status(500).json({ error: "Failed to approve submission" });
