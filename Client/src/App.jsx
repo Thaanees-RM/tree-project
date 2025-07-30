@@ -7,7 +7,7 @@ import Home from "./pages/Home";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Join from "./components/JoinForm";
 import Upload from "./components/JoinFormStep2";
-import Submit from "./components/joinFormStep3";
+import Submit from "./components/JoinFormStep3";
 import AboutUs from "./pages/AboutUs";
 import ScrollToTop from './components/ScrollToTop';
 
