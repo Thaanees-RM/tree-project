@@ -1,5 +1,4 @@
 
-import React from 'react'
 import { useState, useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -37,7 +36,7 @@ const Home = () => {
     }, 2000); // change every 2 seconds
 
     return () => clearInterval(interval);
-  }, []);
+  }, [slides.length]);
 
   const current = slides[index];
 

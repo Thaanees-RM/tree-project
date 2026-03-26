@@ -53,7 +53,7 @@ const JoinFormStep3 = () => {
       //    body: formData,
       // });
 
-      const res = await axios.post("http://localhost:5001/api/users", formData);
+      await axios.post("http://localhost:5001/api/users", formData);
 
       //  if (!res.ok) {
       //    const errData = await res.json();
@@ -74,18 +74,6 @@ const JoinFormStep3 = () => {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleGetCertificate = () => {
-
-    navigate("/certificate", {
-      state: {
-        name,
-        tree,
-        location: locationText,
-        image: imagePreview,
-      },
-    }); 
   };
 
   // Step indicator data

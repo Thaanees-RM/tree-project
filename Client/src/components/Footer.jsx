@@ -16,12 +16,6 @@ const Footer = () => {
 
   const navigate = useNavigate();
 
-  const handleHowToJoinScroll = () => {
-    const el = document.querySelector('#how-to-join');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-    navigate('/home'); // Ensures you're on the home page first
-  };
-
   return (
     <footer
       className='relative flex flex-col justify-between px-10 md:px-20 py-8 bg-[#005D2D] w-full md:h-125'

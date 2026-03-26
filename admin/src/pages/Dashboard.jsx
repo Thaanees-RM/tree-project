@@ -11,7 +11,6 @@ const Dashboard = () => {
   const [data, setData] = useState([]);
 
   const [statusFilter, setStatusFilter] = useState("All");
-  const [modalImage, setModalImage] = useState(null);
   const [selectedEntry, setSelectedEntry] = useState(null);
 
   useEffect(() => {
