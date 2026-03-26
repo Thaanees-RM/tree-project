@@ -6,7 +6,7 @@ import promClient from 'prom-client';
 
 import connectDB from './configs/db.js';
 import userRoutes from "./Routes/userRoutes.js";
-import authRoutes from "./Routes/authRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 
 // Initialize Express App
 const app = express();
