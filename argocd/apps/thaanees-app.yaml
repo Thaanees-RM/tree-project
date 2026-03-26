@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: tree-planting-thaanees
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Thaanees-RM/tree-project.git
+    targetRevision: thaanees
+    path: k8s/overlays/thaanees
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: tree-planting
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

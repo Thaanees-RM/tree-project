@@ -1,0 +1,14 @@
+namespace: tree-planting
+resources:
+  - ../../base
+patches:
+  - path: patch-ingress-host.yaml
+images:
+  - name: treeplantacr.azurecr.io/tree-planting-auth
+    newTag: thaanees-latest
+  - name: treeplantacr.azurecr.io/tree-planting-submission
+    newTag: thaanees-latest
+  - name: treeplantacr.azurecr.io/tree-planting-certificate
+    newTag: thaanees-latest
+  - name: treeplantacr.azurecr.io/tree-planting-gateway
+    newTag: thaanees-latest

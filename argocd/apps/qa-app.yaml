@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: tree-planting-qa
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Thaanees-RM/tree-project.git
+    targetRevision: qa
+    path: k8s/overlays/qa
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: tree-planting
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

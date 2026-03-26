@@ -1,0 +1,129 @@
+trigger:
+  branches:
+    include:
+      - thaanees
+      - qa
+      - production
+
+pr:
+  branches:
+    include:
+      - qa
+      - production
+
+variables:
+  azureSubscription: 'azure-sp-connection'
+  acrServiceConnection: 'acr-service-connection'
+  acrName: 'REPLACE_ACR_NAME'
+  acrLoginServer: 'REPLACE_ACR_NAME.azurecr.io'
+
+stages:
+  - stage: BuildAndPush
+    displayName: Build and Push Images
+    jobs:
+      - job: Build
+        pool:
+          vmImage: ubuntu-latest
+        steps:
+          - checkout: self
+            persistCredentials: true
+
+          - task: AzureCLI@2
+            displayName: ACR Login
+            inputs:
+              azureSubscription: $(azureSubscription)
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+                az acr login --name $(acrName)
+
+          - bash: |
+              set -e
+              SHORT_SHA=$(echo "$(Build.SourceVersion)" | cut -c1-8)
+              BRANCH_NAME="$(Build.SourceBranchName)"
+              TAG="${BRANCH_NAME}-${SHORT_SHA}"
+              echo "##vso[task.setvariable variable=imageTag]$TAG"
+              echo "Using image tag: $TAG"
+            displayName: Compute image tag
+
+          - task: Docker@2
+            displayName: Build and push auth-service
+            inputs:
+              command: buildAndPush
+              repository: tree-planting-auth
+              dockerfile: services/auth-service/Dockerfile
+              buildContext: services/auth-service
+              containerRegistry: $(acrServiceConnection)
+              tags: |
+                $(imageTag)
+
+          - task: Docker@2
+            displayName: Build and push submission-service
+            inputs:
+              command: buildAndPush
+              repository: tree-planting-submission
+              dockerfile: services/submission-service/Dockerfile
+              buildContext: services/submission-service
+              containerRegistry: $(acrServiceConnection)
+              tags: |
+                $(imageTag)
+
+          - task: Docker@2
+            displayName: Build and push certificate-service
+            inputs:
+              command: buildAndPush
+              repository: tree-planting-certificate
+              dockerfile: services/certificate-service/Dockerfile
+              buildContext: services/certificate-service
+              containerRegistry: $(acrServiceConnection)
+              tags: |
+                $(imageTag)
+
+          - task: Docker@2
+            displayName: Build and push gateway
+            inputs:
+              command: buildAndPush
+              repository: tree-planting-gateway
+              dockerfile: services/gateway/Dockerfile
+              buildContext: services/gateway
+              containerRegistry: $(acrServiceConnection)
+              tags: |
+                $(imageTag)
+
+  - stage: UpdateGitOps
+    displayName: Update Kustomize Tags
+    dependsOn: BuildAndPush
+    jobs:
+      - job: Update
+        pool:
+          vmImage: ubuntu-latest
+        steps:
+          - checkout: self
+            persistCredentials: true
+
+          - bash: |
+              set -e
+              BRANCH_NAME="$(Build.SourceBranchName)"
+              SHORT_SHA=$(echo "$(Build.SourceVersion)" | cut -c1-8)
+              TAG="${BRANCH_NAME}-${SHORT_SHA}"
+
+              OVERLAY_PATH="k8s/overlays/${BRANCH_NAME}/kustomization.yaml"
+              if [[ ! -f "$OVERLAY_PATH" ]]; then
+                echo "Overlay not found: $OVERLAY_PATH"
+                exit 1
+              fi
+
+              sed -i "s/newTag: ${BRANCH_NAME}-latest/newTag: ${TAG}/g" "$OVERLAY_PATH"
+
+              git config user.email "pipeline@local"
+              git config user.name "azure-pipelines"
+              git add "$OVERLAY_PATH"
+
+              if git diff --cached --quiet; then
+                echo "No tag updates to commit"
+                exit 0
+              fi
+
+              git commit -m "chore(gitops): update ${BRANCH_NAME} image tags to ${TAG} [skip ci]"
+              git push origin HEAD:${BRANCH_NAME}
+            displayName: Commit updated overlay tags
