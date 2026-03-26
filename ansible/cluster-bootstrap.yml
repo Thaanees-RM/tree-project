@@ -1,0 +1,44 @@
+---
+- name: Bootstrap AKS addons for Tree Planting
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    ingress_ns: ingress-nginx
+    monitoring_ns: monitoring
+
+  tasks:
+    - name: Add ingress-nginx helm repo
+      ansible.builtin.command: helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+      changed_when: false
+
+    - name: Add prometheus-community helm repo
+      ansible.builtin.command: helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+      changed_when: false
+
+    - name: Add argo helm repo
+      ansible.builtin.command: helm repo add argo https://argoproj.github.io/argo-helm
+      changed_when: false
+
+    - name: Update helm repos
+      ansible.builtin.command: helm repo update
+      changed_when: false
+
+    - name: Install ingress-nginx
+      ansible.builtin.command: >-
+        helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx
+        --namespace {{ ingress_ns }} --create-namespace
+      changed_when: false
+
+    - name: Install kube-prometheus-stack
+      ansible.builtin.command: >-
+        helm upgrade --install monitoring prometheus-community/kube-prometheus-stack
+        --namespace {{ monitoring_ns }} --create-namespace
+      changed_when: false
+
+    - name: Install Argo CD
+      ansible.builtin.command: >-
+        helm upgrade --install argocd argo/argo-cd
+        --namespace argocd --create-namespace
+      changed_when: false
